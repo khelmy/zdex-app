@@ -24,14 +24,14 @@ import { Form, FormGroup, Label, Input } from 'reactstrap';
 import Disclaimer from '../disclaimer';
 
 interface IProps {
-  sendTx: (toAddress, amount, gasPrice) => void;
+  swap: (toAddress, amount, gasPrice) => void;
   isModalOpen: boolean;
   toAddress: string;
   amount: string;
   gasPrice: string;
-  sendTxStatus?: string;
+  swapStatus?: string;
   closeModal: () => void;
-  sendTxId?: string;
+  swapId?: string;
 }
 
 interface IState {
@@ -39,7 +39,7 @@ interface IState {
   isComplete: boolean;
   isFailed: boolean;
   isDisclaimerChecked: boolean;
-  prevSendTxStatus?: string;
+  prevSwapStatus?: string;
 }
 
 const initialState: IState = {
@@ -47,44 +47,44 @@ const initialState: IState = {
   isComplete: false,
   isFailed: false,
   isDisclaimerChecked: false,
-  prevSendTxStatus: undefined
+  prevSwapStatus: undefined
 };
 
-const SendTxModal: React.FunctionComponent<IProps> = (props) => {
+const SwapModal: React.FunctionComponent<IProps> = (props) => {
   const {
     toAddress,
     amount,
     gasPrice,
     isModalOpen,
-    sendTxId,
+    swapId,
     closeModal,
-    sendTx,
-    sendTxStatus
+    swap,
+    swapStatus
   } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(initialState.isSubmitting);
   const [isComplete, setIsComplete] = useState(initialState.isComplete);
   const [isFailed, setIsFailed] = useState(initialState.isFailed);
   const [isDisclaimerChecked, setIsDisclaimerChecked] = useState(initialState.isDisclaimerChecked);
-  const [prevSendTxStatus, setPrevSendTxStatus] = useState(initialState.prevSendTxStatus);
+  const [prevSwapStatus, setPrevSwapStatus] = useState(initialState.prevSwapStatus);
 
   useEffect(
     () => {
-      if (prevSendTxStatus === requestStatus.PENDING && sendTxStatus === requestStatus.FAILED) {
+      if (prevSwapStatus === requestStatus.PENDING && swapStatus === requestStatus.FAILED) {
         setIsSubmitting(false);
         setIsComplete(false);
         setIsFailed(true);
         setIsDisclaimerChecked(false);
       }
-      if (prevSendTxStatus === requestStatus.PENDING && sendTxStatus === requestStatus.SUCCEED) {
+      if (prevSwapStatus === requestStatus.PENDING && swapStatus === requestStatus.SUCCEED) {
         setIsSubmitting(false);
         setIsComplete(true);
         setIsFailed(false);
         setIsDisclaimerChecked(false);
       }
-      setPrevSendTxStatus(sendTxStatus);
+      setPrevSwapStatus(swapStatus);
     },
-    [sendTxStatus, prevSendTxStatus]
+    [swapStatus, prevSwapStatus]
   );
 
   const handleCheck = () => {
@@ -94,7 +94,7 @@ const SendTxModal: React.FunctionComponent<IProps> = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    sendTx(toAddress, amount, gasPrice);
+    swap(toAddress, amount, gasPrice);
   };
 
   const renderTransactionProcess = () => {
@@ -120,11 +120,11 @@ const SendTxModal: React.FunctionComponent<IProps> = (props) => {
               <br />
               <small>{'Please check after a few minutes.'}</small>
             </p>
-            {sendTxId ? (
+            {swapId ? (
               <u>
                 <a
                   target="_blank"
-                  href={`${EXPLORER_URL}/transactions/${sendTxId}`}
+                  href={`${EXPLORER_URL}/transactions/${swapId}`}
                   rel="noreferrer"
                 >
                   {'View Your Transaction'}
@@ -213,4 +213,4 @@ const SendTxModal: React.FunctionComponent<IProps> = (props) => {
   );
 };
 
-export default SendTxModal;
+export default SwapModal;

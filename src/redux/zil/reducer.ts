@@ -32,10 +32,10 @@ const initialState: any = {
   publicKey: undefined,
   privateKey: undefined,
   faucetTxId: undefined,
-  sendTxId: undefined,
+  swapId: undefined,
   authStatus: undefined,
   faucetStatus: undefined,
-  sendTxStatus: undefined,
+  swapStatus: undefined,
   balanceInQa: undefined,
   getBalanceStatus: undefined,
   minGasPriceInQa: undefined,
@@ -68,41 +68,41 @@ export default function zil(state = initialState, action) {
         privateKey: undefined,
         authStatus: requestStatus.FAILED
       };
-    case consts.RUN_FAUCET:
+    case consts.MANAGE_LIQUIDITY:
       return {
         ...state,
         faucetStatus: requestStatus.PENDING,
         faucetTxId: undefined
       };
-    case consts.RUN_FAUCET_SUCCEEDED:
+    case consts.MANAGE_LIQUIDITY_SUCCEEDED:
       return {
         ...state,
         faucetStatus: requestStatus.SUCCEED,
         faucetTxId: action.payload.faucetTxId
       };
-    case consts.RUN_FAUCET_FAILED:
+    case consts.MANAGE_LIQUIDITY_FAILED:
       return {
         ...state,
         faucetStatus: requestStatus.FAILED,
         faucetTxId: undefined
       };
-    case consts.SEND_TX:
+    case consts.SWAP:
       return {
         ...state,
-        sendTxStatus: requestStatus.PENDING,
-        sendTxId: undefined
+        swapStatus: requestStatus.PENDING,
+        swapId: undefined
       };
-    case consts.SEND_TX_SUCCEEDED:
+    case consts.SWAP_SUCCEEDED:
       return {
         ...state,
-        sendTxStatus: requestStatus.SUCCEED,
-        sendTxId: action.payload.sendTxId
+        swapStatus: requestStatus.SUCCEED,
+        swapId: action.payload.swapId
       };
-    case consts.SEND_TX_FAILED:
+    case consts.SWAP_FAILED:
       return {
         ...state,
-        sendTxStatus: requestStatus.FAILED,
-        sendTxId: undefined
+        swapStatus: requestStatus.FAILED,
+        swapId: undefined
       };
     case consts.GET_BALANCE:
       return {

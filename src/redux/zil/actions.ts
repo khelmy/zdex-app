@@ -28,19 +28,19 @@ export const clear = () => ({
   type: CLEAR
 });
 
-export const RUN_FAUCET = 'RUN_FAUCET';
-export const RUN_FAUCET_SUCCEEDED = 'RUN_FAUCET_SUCCEEDED';
-export const RUN_FAUCET_FAILED = 'RUN_FAUCET_FAILED';
-export const runFaucet = (address, token) => ({
-  type: RUN_FAUCET,
+export const MANAGE_LIQUIDITY = 'MANAGE_LIQUIDITY';
+export const MANAGE_LIQUIDITY_SUCCEEDED = 'MANAGE_LIQUIDITY_SUCCEEDED';
+export const MANAGE_LIQUIDITY_FAILED = 'MANAGE_LIQUIDITY_FAILED';
+export const manageLiquidity = (address, token) => ({
+  type: MANAGE_LIQUIDITY,
   payload: { address, token }
 });
 
-export const SEND_TX = 'SEND_TX';
-export const SEND_TX_SUCCEEDED = 'SEND_TX_SUCCEEDED';
-export const SEND_TX_FAILED = 'SEND_TX_FAILED';
-export const sendTx = (toAddress, amount) => ({
-  type: SEND_TX,
+export const SWAP = 'SWAP';
+export const SWAP_SUCCEEDED = 'SWAP_SUCCEEDED';
+export const SWAP_FAILED = 'SWAP_FAILED';
+export const swap = (toAddress, amount) => ({
+  type: SWAP,
   payload: { toAddress, amount }
 });
 

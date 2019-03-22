@@ -27,7 +27,7 @@ import { AccountInfo } from '../account-info';
 import { requestStatus } from '../../constants';
 
 interface IProps {
-  sendTx: (toAddress, amount, gasPrice) => void;
+  swap: (toAddress, amount, gasPrice) => void;
   clear: () => void;
   getMinGasPrice: () => void;
   minGasPriceInQa: string;
@@ -35,11 +35,11 @@ interface IProps {
   getBalance: () => void;
   balanceInQa: string;
   getBalanceStatus?: string;
-  sendTxStatus?: string;
+  swapStatus?: string;
   publicKey: string;
   address: string;
   network: string;
-  sendTxId?: string;
+  swapId?: string;
 }
 
 interface IState {
@@ -69,8 +69,8 @@ const initialState: IState = {
 const SendForm: React.FunctionComponent<IProps> = (props) => {
   const {
     address,
-    sendTxStatus,
-    sendTxId,
+    swapStatus,
+    swapId,
     getBalance,
     balanceInQa,
     getBalanceStatus,
@@ -243,13 +243,13 @@ const SendForm: React.FunctionComponent<IProps> = (props) => {
       </div>
       {isModalOpen ? (
         <ConfirmTxModal
-          sendTxId={sendTxId}
-          sendTxStatus={sendTxStatus}
+          swapId={swapId}
+          swapStatus={swapStatus}
           toAddress={toAddress}
           amount={amount}
           gasPrice={minGasPriceInZil}
           isModalOpen={isModalOpen}
-          sendTx={props.sendTx}
+          swap={props.swap}
           closeModal={closeModal}
         />
       ) : null}
@@ -262,8 +262,8 @@ const mapStateToProps = (state) => ({
   getBalanceStatus: state.zil.getBalanceStatus,
   minGasPriceInQa: state.zil.minGasPriceInQa,
   getMinGasPriceStatus: state.zil.getMinGasPriceStatus,
-  sendTxStatus: state.zil.sendTxStatus,
-  sendTxId: state.zil.sendTxId,
+  swapStatus: state.zil.swapStatus,
+  swapId: state.zil.swapId,
   network: state.zil.network,
   address: state.zil.address,
   publicKey: state.zil.publicKey,
@@ -271,7 +271,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  sendTx: (toAddress, amount) => dispatch(zilActions.sendTx(toAddress, amount)),
+  swap: (toAddress, amount) => dispatch(zilActions.swap(toAddress, amount)),
   clear: () => dispatch(zilActions.clear()),
   getBalance: () => dispatch(zilActions.getBalance()),
   getMinGasPrice: () => dispatch(zilActions.getMinGasPrice())

@@ -61,7 +61,7 @@ export function* watchAccessWalletSaga() {
   yield takeLatest(consts.ACCESS_WALLET, accessWalletSaga);
 }
 
-export function* sendTxSaga(action) {
+export function* swapSaga(action) {
   // debounce by 500ms
   yield delay(500);
   try {
@@ -105,22 +105,22 @@ export function* sendTxSaga(action) {
       throw Error(data.error.message);
     }
 
-    const sendTxId = data.result.TranID;
+    const swapId = data.result.TranID;
 
     yield put({
-      type: consts.SEND_TX_SUCCEEDED,
-      payload: { sendTxId }
+      type: consts.SWAP_SUCCEEDED,
+      payload: { swapId }
     });
   } catch (error) {
     console.log(error);
-    yield put({ type: consts.SEND_TX_FAILED });
+    yield put({ type: consts.SWAP_FAILED });
   }
 }
-export function* watchSendTxSaga() {
-  yield takeLatest(consts.SEND_TX, sendTxSaga);
+export function* watchSwapSaga() {
+  yield takeLatest(consts.SWAP, swapSaga);
 }
 
-export function* runFaucet(action) {
+export function* manageLiquidity(action) {
   // debounce by 500ms
   yield delay(500);
   try {
@@ -142,16 +142,16 @@ export function* runFaucet(action) {
 
     const faucetTxId = res.data.txId;
     yield put({
-      type: consts.RUN_FAUCET_SUCCEEDED,
+      type: consts.MANAGE_LIQUIDITY_SUCCEEDED,
       payload: { faucetTxId }
     });
   } catch (error) {
     console.log(error);
-    yield put({ type: consts.RUN_FAUCET_FAILED });
+    yield put({ type: consts.MANAGE_LIQUIDITY_FAILED });
   }
 }
-export function* watchRunFaucetSaga() {
-  yield takeLatest(consts.RUN_FAUCET, runFaucet);
+export function* watchManageLiquiditySaga() {
+  yield takeLatest(consts.MANAGE_LIQUIDITY, manageLiquidity);
 }
 
 export function* getBalance(action) {
