@@ -123,7 +123,7 @@ const LiquidityForm: React.FunctionComponent<IProps> = (props) => {
                 <b>{'Manage Liquidity'}</b>
               </h2>
               <p className="text-secondary">
-                {`This Zil faucet is running on The ${network} Network.`}
+                {`This process is running on The ${network} Network.`}
                 <br />
                 {'Please run the faucet to receive a small amount of Zil for testing.'}
               </p>

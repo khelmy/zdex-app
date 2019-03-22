@@ -40,7 +40,7 @@ const FaucetContainer: React.FunctionComponent<IProps> = (props) => {
             <LiquidityForm />
           ) : (
             <div>
-              <span className="pl-1 text-secondary">ZIL Faucet</span>
+              <span className="pl-1 text-secondary">Manage Liquidity</span>
               <AccessTabs />
             </div>
           )}
