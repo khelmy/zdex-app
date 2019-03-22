@@ -1,8 +1,6 @@
-[![Build Status][travis-svg]][travis-url]
-[![License][license-svg]][license-url]
-[![Storybook][storybook-svg]][storybook-url]
+# ZDEX Web App
 
-# ZDEX App
+[ZDEX](https://github.com/khelmy/zdex) is a decentralized exchange for fungible tokens on Zilliqa. This repository contains the web interface for the ZDEX contracts.
 
 Gratefully forked from [nucleus-wallet](https://dev-wallet.zilliqa.com)
 
