@@ -24,13 +24,11 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import Home from './containers/HomeContainer';
 import LiquidityContainer from './containers/LiquidityContainer';
 import SwapContainer from './containers/SwapContainer';
-import GenerateContainer from './containers/GenerateContainer';
 import Spinner from './components/spinner';
 
 export const paths = {
   liquidity: '/liquidity',
   swap: '/swap',
-  generate: '/generate',
   home: '/home'
 };
 
@@ -41,7 +39,6 @@ export const RouterNode = () => (
         <Route exact={true} path={paths.home} component={Home} />
         <Route exact={true} path={paths.liquidity} component={LiquidityContainer} />
         <Route exact={true} path={paths.swap} component={SwapContainer} />
-        <Route exact={true} path={paths.generate} component={GenerateContainer} />
         <Redirect from="/" to={paths.home} />
       </Switch>
     </Suspense>
