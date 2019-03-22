@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 import { requestStatus } from '../constants';
 import AccessTabs from '../components/access-tabs';
 import Layout from '../components/layout';
-import SendForm from '../components/send-form';
+import SwapForm from '../components/swap-form';
 
 interface IProps {
   history: H.History;
@@ -29,7 +29,7 @@ interface IProps {
   authStatus?: string;
 }
 
-const SendContainer: React.FunctionComponent<IProps> = (props) => {
+const SwapContainer: React.FunctionComponent<IProps> = (props) => {
   const { authStatus } = props;
   const isAuth = authStatus === requestStatus.SUCCEED;
   return (
@@ -37,10 +37,10 @@ const SendContainer: React.FunctionComponent<IProps> = (props) => {
       <Layout>
         <div className="p-4">
           {isAuth ? (
-            <SendForm />
+            <SwapForm />
           ) : (
             <div>
-              <span className="pl-1 text-secondary">Send ZIL</span>
+              <span className="pl-1 text-secondary">Swap</span>
               <AccessTabs />
             </div>
           )}
@@ -54,4 +54,4 @@ const mapStateToProps = (state) => ({
   authStatus: state.zil.authStatus
 });
 
-export default connect(mapStateToProps)(SendContainer);
+export default connect(mapStateToProps)(SwapContainer);
