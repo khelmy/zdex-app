@@ -1,18 +1,18 @@
 /**
- * This file is part of nucleus-wallet.
+ * This file is part of zdex-app.
  * Copyright (c) 2018 - present Zilliqa Research Pte. Ltd.
  *
- * nucleus-wallet is free software: you can redistribute it and/or modify it under the
+ * zdex-app is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * nucleus-wallet is distributed in the hope that it will be useful, but WITHOUT ANY
+ * zdex-app is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License along with
- * nucleus-wallet.  If not, see <http://www.gnu.org/licenses/>.
+ * zdex-app.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 import React from 'react';
@@ -27,12 +27,12 @@ const Home: React.FunctionComponent = () => {
   return (
     <div>
       <Layout>
-        <div className="nucleus-header-container text-center">
-          <div className="nucleus-header-bg">
-            <div className="nucleus-header">
-              <h1>Nucleus Wallet</h1>
+        <div className="zdex-header-container text-center">
+          <div className="zdex-header-bg">
+            <div className="zdex-header">
+              <h1>ZDEX</h1>
               <p className="pt-2">
-                Nucleus Wallet is free, open-source, Zilliqa <b>Test Net</b> Wallet.
+                ZDEX is a decentralized exchange for fungible tokens on Zilliqa.
               </p>
             </div>
           </div>
@@ -52,7 +52,7 @@ const Home: React.FunctionComponent = () => {
           </Row>
           <Row className="pt-5">
             <Col xs={6} sm={6} md={6} lg={4} className="text-center ml-auto">
-              <MdSecurity size={50} className="text-nucleus" />
+              <MdSecurity size={50} className="text-zdex" />
               <div className="text-secondary text-center pt-3">
                 <b>
                   We do not store your private key on our servers or transmit it over the network at
@@ -61,15 +61,14 @@ const Home: React.FunctionComponent = () => {
                 <br />
                 <p className="pt-1">
                   <small>
-                    The Nucleus Wallet is free, open-source and runs entirely on your computer.
-                    Private key generation and keystore encryption/decryption are handled on your
-                    computer only.
+                    ZDEX is free and open-source. Keystore encryption and decryption are handled on
+                    your computer only.
                   </small>
                 </p>
               </div>
             </Col>
             <Col xs={6} sm={6} md={6} lg={4} className="text-center mr-auto">
-              <MdBeenhere size={50} className="text-nucleus" />
+              <MdBeenhere size={50} className="text-zdex" />
               <div className="text-secondary text-center pt-3">
                 <b>We recommend downloading and securely storing a keystore json file.</b>
                 <br />

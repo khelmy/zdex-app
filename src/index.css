@@ -1,18 +1,18 @@
 /**
- * This file is part of nucleus-wallet.
+ * This file is part of zdex-app.
  * Copyright (c) 2018 - present Zilliqa Research Pte. Ltd.
  *
- * nucleus-wallet is free software: you can redistribute it and/or modify it under the
+ * zdex-app is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * nucleus-wallet is distributed in the hope that it will be useful, but WITHOUT ANY
+ * zdex-app is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License along with
- * nucleus-wallet.  If not, see <http://www.gnu.org/licenses/>.
+ * zdex-app.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 @value colors: "./assets/colors/colors.css";
@@ -78,7 +78,7 @@ a:hover {
   color: --gray700 !important;
 }
 
-.text-nucleus {
+.text-zdex {
   color: --blue800 !important;
 }
 
@@ -158,11 +158,11 @@ form input[type=tel]::placeholder {
   color: --gray300;
 }
 
-.nucleus-header-container {
+.zdex-header-container {
   position: relative;
 }
 
-.nucleus-header::before {
+.zdex-header::before {
   background-color: rgba(0, 0, 0, 0.4);
   position: absolute;
   width: 100%;
@@ -173,26 +173,26 @@ form input[type=tel]::placeholder {
   content: "";
 }
 
-.nucleus-header-bg {
+.zdex-header-bg {
   background-size: cover;
   background-position: top center;
 }
 
-.webp .nucleus-header-bg {
-  background-image: url(./assets/images/nucleus-bg.webp);
+.webp .zdex-header-bg {
+  background-image: url(./assets/images/zdex-bg.webp);
 }
 
-.no-webp .nucleus-header-bg {
-  background-image: url(./assets/images/nucleus-bg.jpg);
+.no-webp .zdex-header-bg {
+  background-image: url(./assets/images/zdex-bg.jpg);
 }
 
-.nucleus-header {
+.zdex-header {
   padding: 5rem;
   color: --white;
   margin: 0;
 }
 
-.nucleus-header > h1 {
+.zdex-header > h1 {
   position: relative;
   font-size: 50px;
   -webkit-animation: fadein 1.5s; /* Safari, Chrome and Opera > 12.1 */
@@ -200,7 +200,7 @@ form input[type=tel]::placeholder {
   animation: fadein 1.5s;
 }
 
-.nucleus-header > p {
+.zdex-header > p {
   position: relative;
   font-size: 15px;
   -webkit-animation: fadein 1.5s; /* Safari, Chrome and Opera > 12.1 */

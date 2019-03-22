@@ -13,7 +13,7 @@ services:
 script:
   - yarn install
   - yarn ci
-  - if [[ $TRAVIS_REPO_SLUG == "Zilliqa/nucleus-wallet" && $TRAVIS_BRANCH = "master" && $TRAVIS_PULL_REQUEST == "false" ]]; then
+  - if [[ $TRAVIS_REPO_SLUG == "Zilliqa/zdex-app" && $TRAVIS_BRANCH = "master" && $TRAVIS_PULL_REQUEST == "false" ]]; then
       yarn build;
       yarn global add firebase-tools typescript tslint;
       firebase use production;
@@ -21,7 +21,7 @@ script:
     fi
 
 after_success:
-  - if [[ $TRAVIS_REPO_SLUG == "Zilliqa/nucleus-wallet" && $TRAVIS_BRANCH = "master" && $TRAVIS_PULL_REQUEST == "false" ]]; then
+  - if [[ $TRAVIS_REPO_SLUG == "Zilliqa/zdex-app" && $TRAVIS_BRANCH = "master" && $TRAVIS_PULL_REQUEST == "false" ]]; then
       docker --version;
       pip install --user awscli;
       export PATH=$PATH:$HOME/.local/bin;

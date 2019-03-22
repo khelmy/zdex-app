@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "nucleus-wallet",
-    "production": "nucleus-wallet"
+    "default": "zdex-app",
+    "production": "zdex-app"
   }
 }

@@ -10,8 +10,8 @@ ENV REACT_APP_MSG_VERSION=${REACT_APP_MSG_VERSION:-1}
 ENV REACT_APP_NODE_URL=${REACT_APP_NODE_URL:-https://dev-api.zilliqa.com}
 ENV REACT_APP_EXPLORER_URL=${REACT_APP_EXPLORER_URL:-https://dev-explorer.zilliqa.com}
 
-COPY . /nucleus-wallet
-WORKDIR /nucleus-wallet
+COPY . /zdex-app
+WORKDIR /zdex-app
 
 RUN yarn install
 RUN yarn ci
