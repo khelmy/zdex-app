@@ -283,11 +283,6 @@ form input[type=tel]::placeholder {
   background-color: --blue500;
 }
 
-div.recaptcha {
-  margin: 0 auto;
-  width: 304px;
-}
-
 .cursor-pointer {
   cursor: pointer;
 }
