@@ -16,53 +16,74 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col } from 'reactstrap';
+import { Card, Label, Input, FormGroup, Form, Row, Col, FormFeedback } from 'reactstrap';
+import { BN, units } from '@zilliqa-js/util';
+import Button from '../button';
 import * as zilActions from '../../redux/zil/actions';
 import { connect } from 'react-redux';
-import { requestStatus } from '../../constants';
-import SpinnerWithCheckMark from '../spinner-with-check-mark';
+import { getInputValidationState, formatSendAmountInZil } from '../../utils';
+import ConfirmTxModal from '../confirm-tx-modal';
 import { AccountInfo } from '../account-info';
-import FaucetPending from '../liquidity-pending';
-import FaucetComplete from '../liquidity-complete';
-import Recaptcha from '../recaptcha';
+import { requestStatus } from '../../constants';
 
 interface IProps {
-  runFaucet: (address: string, token: string) => void;
+  sendTx: (toAddress, amount, gasPrice) => void;
   clear: () => void;
-  faucetStatus?: string;
-  faucetTxId?: string;
-  publicKey: string;
-  address: string;
-  network: string;
+  getMinGasPrice: () => void;
+  minGasPriceInQa: string;
+  getMinGasPriceStatus?: string;
   getBalance: () => void;
   balanceInQa: string;
   getBalanceStatus?: string;
+  sendTxStatus?: string;
+  publicKey: string;
+  address: string;
+  network: string;
+  sendTxId?: string;
 }
 
 interface IState {
-  isRunningFaucet: boolean;
-  isFaucetComplete: boolean;
-  isFaucetIncomplete: boolean;
-  prevFaucetStatus?: string;
+  toAddress: string;
+  toAddressValid: boolean;
+  toAddressInvalid: boolean;
+  amount: string;
+  isSendingTx: boolean;
+  gasPrice: string;
+  gasPriceInQa: string;
+  isUpdatingGasPrice: boolean;
+  isModalOpen: boolean;
 }
 
 const initialState: IState = {
-  isRunningFaucet: false,
-  isFaucetComplete: false,
-  isFaucetIncomplete: false,
-  prevFaucetStatus: requestStatus.PENDING
+  isModalOpen: false,
+  toAddress: '',
+  toAddressValid: false,
+  toAddressInvalid: false,
+  amount: '',
+  isSendingTx: false,
+  gasPrice: '0',
+  gasPriceInQa: '0',
+  isUpdatingGasPrice: false
 };
 
-const LiquidityForm: React.FunctionComponent<IProps> = (props) => {
+const SendForm: React.FunctionComponent<IProps> = (props) => {
   const {
     address,
-    network,
-    faucetTxId,
-    faucetStatus,
+    sendTxStatus,
+    sendTxId,
     getBalance,
     balanceInQa,
-    getBalanceStatus
+    getBalanceStatus,
+    minGasPriceInQa,
+    getMinGasPriceStatus,
+    getMinGasPrice
   } = props;
+
+  const [isModalOpen, setIsModalOpen] = useState(initialState.isModalOpen);
+  const [toAddress, setToAddress] = useState(initialState.toAddress);
+  const [toAddressValid, setToAddressValid] = useState(initialState.toAddressValid);
+  const [toAddressInvalid, setToAddressInvalid] = useState(initialState.toAddressInvalid);
+  const [amount, setAmount] = useState(initialState.amount);
 
   const isUpdatingBalance = getBalanceStatus === requestStatus.PENDING;
   useEffect(
@@ -74,38 +95,63 @@ const LiquidityForm: React.FunctionComponent<IProps> = (props) => {
     [balanceInQa]
   );
 
-  const [isFaucetComplete, setIsFaucetComplete] = useState(initialState.isFaucetComplete);
-  const [isFaucetIncomplete, setIsFaucetIncomplete] = useState(initialState.isFaucetIncomplete);
-  const [isRunningFaucet, setIsRunningFaucet] = useState(initialState.isRunningFaucet);
-  const [prevFaucetStatus, setPrevFaucetStatus] = useState(initialState.prevFaucetStatus);
+  const isUpdatingMinGasPrice = getMinGasPriceStatus === requestStatus.PENDING;
+  const minGasPriceInZil = units.fromQa(new BN(minGasPriceInQa), units.Units.Zil);
+
   useEffect(
     () => {
-      const isFailed =
-        faucetStatus === requestStatus.FAILED && prevFaucetStatus === requestStatus.PENDING;
-
-      const isSucceeded =
-        faucetStatus === requestStatus.SUCCEED && prevFaucetStatus === requestStatus.PENDING;
-
-      if (isFailed) {
-        setIsRunningFaucet(false);
-        setIsFaucetComplete(false);
-        setIsFaucetIncomplete(true);
+      if (getMinGasPriceStatus === undefined) {
+        getMinGasPrice();
       }
-      if (isSucceeded) {
-        setIsRunningFaucet(false);
-        setIsFaucetComplete(true);
-        setIsFaucetIncomplete(false);
-      }
-
-      setPrevFaucetStatus(faucetStatus);
     },
-    [faucetStatus, prevFaucetStatus]
+    [minGasPriceInQa]
   );
 
-  const handleCaptcha = (token) => {
-    setIsRunningFaucet(true);
-    props.runFaucet(address, token);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setToAddress('');
+    setToAddressValid(false);
+    setToAddressInvalid(false);
+    setAmount('');
   };
+
+  const changeToAddress = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    e.preventDefault();
+    const value = e.target.value;
+    const key = 'toAddress';
+    const validationResult: any = getInputValidationState(key, value, /^0x[a-fA-F0-9]{40}$/);
+    setToAddress(value);
+    setToAddressValid(validationResult.toAddressValid);
+    setToAddressInvalid(validationResult.toAddressInvalid);
+  };
+
+  const changeAmount = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    e.preventDefault();
+    if (e.target.value === '' || /^\d*\.?\d*$/.test(e.target.value)) {
+      setAmount(e.target.value);
+    }
+  };
+
+  const formatAmount = (): void => {
+    if (amount !== initialState.amount) {
+      const amountInZil: string = parseFloat(amount).toFixed(3);
+      const balanceInZil: string = units.fromQa(new BN(balanceInQa), units.Units.Zil);
+      const amountFormattedInZil = formatSendAmountInZil(
+        amountInZil,
+        balanceInZil,
+        minGasPriceInZil
+      );
+      setAmount(amountFormattedInZil);
+    }
+  };
+
+  const isBalanceInsufficient = new BN(balanceInQa).lte(new BN(minGasPriceInQa));
+  const isSendButtonDisabled =
+    toAddressInvalid ||
+    toAddress === initialState.toAddress ||
+    amount === initialState.amount ||
+    isBalanceInsufficient;
+  const sendButtonText = 'Send';
 
   return (
     <div>
@@ -120,44 +166,93 @@ const LiquidityForm: React.FunctionComponent<IProps> = (props) => {
           <div className="py-5">
             <div className="px-4 text-center">
               <h2 className="pb-2">
-                <b>{'Manage Liquidity'}</b>
+                <b>{'Send'}</b>
               </h2>
-              <p className="text-secondary">
-                {`This process is running on The ${network} Network.`}
-                <br />
-                {'Please run the faucet to receive a small amount of Zil for testing.'}
-              </p>
-              <div className="py-4">
-                {isRunningFaucet ? (
-                  <div>
-                    <SpinnerWithCheckMark loading={true} />
-                    <FaucetPending />
-                  </div>
-                ) : null}
-                {isFaucetComplete ? (
-                  <div>
-                    <SpinnerWithCheckMark loading={false} />
-                    {faucetTxId ? <FaucetComplete txId={faucetTxId} /> : null}
-                  </div>
-                ) : null}
-
-                {isRunningFaucet || isFaucetComplete ? null : (
-                  <div>
-                    <Recaptcha onChange={handleCaptcha} />
-                    {isFaucetIncomplete ? (
-                      <p className="pt-4">
-                        <small className="text-danger text-fade-in">
-                          {'Failed to run faucet. Please try again later.'}
+              <Row>
+                <Col xs={12} sm={12} md={12} lg={8} className="mr-auto ml-auto">
+                  <Form className="mt-4 text-left" onSubmit={(e) => e.preventDefault()}>
+                    <FormGroup>
+                      <Label for="Address">
+                        <small>
+                          <b>{'To Address'}</b>
+                        </small>
+                      </Label>
+                      <Input
+                        id="toAddress"
+                        type="text"
+                        name="toAddress"
+                        data-testid="to-address"
+                        value={toAddress}
+                        onChange={changeToAddress}
+                        valid={toAddressValid}
+                        invalid={toAddressInvalid}
+                        placeholder="Enter the Address to Send"
+                        maxLength={42}
+                      />
+                      <FormFeedback>{'invalid address'}</FormFeedback>
+                      <FormFeedback valid={true}>{'valid address'}</FormFeedback>
+                    </FormGroup>
+                    <br />
+                    <FormGroup>
+                      <Label for="amount">
+                        <small>
+                          <b>{'Amount to Send (ZILs)'}</b>
+                        </small>
+                      </Label>
+                      <Input
+                        id="amount"
+                        type="tel"
+                        name="amount"
+                        maxLength={10}
+                        data-testid="amount"
+                        value={amount}
+                        onChange={changeAmount}
+                        placeholder="Enter the Amount"
+                        onBlur={formatAmount}
+                        disabled={isUpdatingBalance || isUpdatingMinGasPrice}
+                      />
+                    </FormGroup>
+                    <small className="text-secondary">
+                      Gas Price: {isUpdatingMinGasPrice ? 'loading...' : `${minGasPriceInZil} ZIL`}
+                    </small>
+                    <br />
+                    <div className="py-5 text-center">
+                      <Button
+                        text={sendButtonText}
+                        type="primary"
+                        ariaLabel={'sendButtonText'}
+                        onClick={() => setIsModalOpen(true)}
+                        disabled={isSendButtonDisabled}
+                      />
+                    </div>
+                    {isBalanceInsufficient && !isUpdatingBalance ? (
+                      <p className="text-center text-danger">
+                        <small>
+                          {'Your balance is not sufficient to send transaction.'}
+                          <br />
+                          {`Minimum Gas Price: ${minGasPriceInZil} ZIL`}
                         </small>
                       </p>
                     ) : null}
-                  </div>
-                )}
-              </div>
+                  </Form>
+                </Col>
+              </Row>
             </div>
           </div>
         </Card>
       </div>
+      {isModalOpen ? (
+        <ConfirmTxModal
+          sendTxId={sendTxId}
+          sendTxStatus={sendTxStatus}
+          toAddress={toAddress}
+          amount={amount}
+          gasPrice={minGasPriceInZil}
+          isModalOpen={isModalOpen}
+          sendTx={props.sendTx}
+          closeModal={closeModal}
+        />
+      ) : null}
     </div>
   );
 };
@@ -165,20 +260,24 @@ const LiquidityForm: React.FunctionComponent<IProps> = (props) => {
 const mapStateToProps = (state) => ({
   balanceInQa: state.zil.balanceInQa,
   getBalanceStatus: state.zil.getBalanceStatus,
-  faucetTxId: state.zil.faucetTxId,
-  faucetStatus: state.zil.faucetStatus,
+  minGasPriceInQa: state.zil.minGasPriceInQa,
+  getMinGasPriceStatus: state.zil.getMinGasPriceStatus,
+  sendTxStatus: state.zil.sendTxStatus,
+  sendTxId: state.zil.sendTxId,
   network: state.zil.network,
   address: state.zil.address,
-  publicKey: state.zil.publicKey
+  publicKey: state.zil.publicKey,
+  zilliqa: state.zil.zilliqa
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  runFaucet: (address, token) => dispatch(zilActions.runFaucet(address, token)),
+  sendTx: (toAddress, amount) => dispatch(zilActions.sendTx(toAddress, amount)),
   clear: () => dispatch(zilActions.clear()),
-  getBalance: () => dispatch(zilActions.getBalance())
+  getBalance: () => dispatch(zilActions.getBalance()),
+  getMinGasPrice: () => dispatch(zilActions.getMinGasPrice())
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(LiquidityForm);
+)(SendForm);
