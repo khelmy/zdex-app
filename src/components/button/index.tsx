@@ -1,6 +1,6 @@
 /**
  * This file is part of zdex-app.
- * Copyright (c) 2018 - present Zilliqa Research Pte. Ltd.
+ * Copyright (c) 2018 - present Timelock, LLC
  *
  * zdex-app is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software

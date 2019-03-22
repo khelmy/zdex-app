@@ -1,6 +1,6 @@
 /**
  * This file is part of zdex-app.
- * Copyright (c) 2018 - present Zilliqa Research Pte. Ltd.
+ * Copyright (c) 2018 - present Timelock, LLC
  *
  * zdex-app is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -18,7 +18,7 @@
 import React from 'react';
 import { FaGithub, FaGitter, FaTwitter } from 'react-icons/fa';
 import './style.css';
-const copyright: string = 'Copyright © 2019 Zilliqa Research Pte. Ltd.';
+const copyright: string = 'Copyright © 2019 Timelock, LLC';
 
 const Footer: React.SFC = () => (
   <footer data-testid="footer" className={'footer'}>
