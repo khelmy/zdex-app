@@ -22,8 +22,8 @@ import { connect } from 'react-redux';
 import { requestStatus } from '../../constants';
 import SpinnerWithCheckMark from '../spinner-with-check-mark';
 import { AccountInfo } from '../account-info';
-import FaucetPending from '../faucet-pending';
-import FaucetComplete from '../faucet-complete';
+import FaucetPending from '../liquidity-pending';
+import FaucetComplete from '../liquidity-complete';
 import Recaptcha from '../recaptcha';
 
 interface IProps {
@@ -53,7 +53,7 @@ const initialState: IState = {
   prevFaucetStatus: requestStatus.PENDING
 };
 
-const FaucetForm: React.FunctionComponent<IProps> = (props) => {
+const LiquidityForm: React.FunctionComponent<IProps> = (props) => {
   const {
     address,
     network,
@@ -120,7 +120,7 @@ const FaucetForm: React.FunctionComponent<IProps> = (props) => {
           <div className="py-5">
             <div className="px-4 text-center">
               <h2 className="pb-2">
-                <b>{'ZIL Faucet'}</b>
+                <b>{'Manage Liquidity'}</b>
               </h2>
               <p className="text-secondary">
                 {`This Zil faucet is running on The ${network} Network.`}
@@ -181,4 +181,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(FaucetForm);
+)(LiquidityForm);

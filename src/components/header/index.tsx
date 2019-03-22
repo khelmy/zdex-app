@@ -68,8 +68,8 @@ const Header: React.FunctionComponent<IProps> = (props) => {
               </Link>
             </NavItem>
             <NavItem className="sidebar-link">
-              <Link to={paths.faucet} className={`nav-link`}>
-                {'ZIL Faucet'}
+              <Link to={paths.liquidity} className={`nav-link`}>
+                {'Manage Liquidity'}
               </Link>
             </NavItem>
             {isAuth ? (

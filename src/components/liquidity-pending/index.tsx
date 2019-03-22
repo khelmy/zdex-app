@@ -16,26 +16,15 @@
  */
 
 import React from 'react';
-import { EXPLORER_URL } from '../../constants';
 
-const FaucetComplete: React.SFC<{ txId: string }> = ({ txId }) => (
-  <div data-testid="faucet-complete">
-    <p className="pt-4 text-secondary">
-      <span className="text-primary">{'Transaction In Process'}</span>
+const FaucetPending: React.SFC = () => (
+  <div data-testid="liquidity-pending" className="text-center py-4">
+    <p className="text-secondary text-fade-in">
+      {'Running Faucet'}
       <br />
-      <br />
-      <small>{'Your transaction is pending blockchain confirmation.'}</small>
-      <br />
-      <small>{'Please check after a few minutes.'}</small>
+      <small>{'Please kindly wait. It might take a while.'}</small>
     </p>
-    {txId ? (
-      <u>
-        <a target="_blank" href={`${EXPLORER_URL}/transactions/${txId}`} rel="noreferrer">
-          {'View Your Transaction'}
-        </a>
-      </u>
-    ) : null}
   </div>
 );
 
-export default FaucetComplete;
+export default FaucetPending;

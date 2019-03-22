@@ -2,7 +2,7 @@
 
 exports[`matches the snapshot 1`] = `
 <div
-  data-testid="faucet-complete"
+  data-testid="liquidity-complete"
 >
   <p
     class="pt-4 text-secondary"

@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 import { requestStatus } from '../constants';
 import AccessTabs from '../components/access-tabs';
 import Layout from '../components/layout';
-import FaucetForm from '../components/faucet-form';
+import LiquidityForm from '../components/liquidity-form';
 
 interface IProps {
   history: H.History;
@@ -37,7 +37,7 @@ const FaucetContainer: React.FunctionComponent<IProps> = (props) => {
       <Layout>
         <div className="p-4">
           {isAuth ? (
-            <FaucetForm />
+            <LiquidityForm />
           ) : (
             <div>
               <span className="pl-1 text-secondary">ZIL Faucet</span>
