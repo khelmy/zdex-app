@@ -21,14 +21,14 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Form, Row, Col } from
 
 import './style.css';
 
-import AccessKeystore from '../access-keystore';
-import AccessPrivateKey from '../access-private-key';
+import SwapZilToToken from '../swap-zil-to-token';
+import SwapTokenToZil from '../swap-token-to-zil';
 
-const KEYSTORE_TAB = '0';
-const PRIVATE_KEY_TAB = '1';
+const ZIL_TO_TOKEN_TAB = '0';
+const TOKEN_TO_ZIL_TAB = '1';
 
 const AccessTabs: React.FunctionComponent = () => {
-  const [activeTab, setActiveTab] = useState(KEYSTORE_TAB);
+  const [activeTab, setActiveTab] = useState(ZIL_TO_TOKEN_TAB);
   const toggle = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
@@ -43,7 +43,7 @@ const AccessTabs: React.FunctionComponent = () => {
             <Col xs={10} sm={10} md={8} lg={7} className="mr-auto ml-auto">
               <div className="text-center">
                 <h2 className="pt-5 pb-4">
-                  <b>{'Access Existing Wallet'}</b>
+                  <b>{'Perform a Swap'}</b>
                 </h2>
               </div>
               <div>
@@ -51,32 +51,32 @@ const AccessTabs: React.FunctionComponent = () => {
                   <NavItem>
                     <NavLink
                       className={`cursor-pointer ${classnames({
-                        active: activeTab === KEYSTORE_TAB
+                        active: activeTab === ZIL_TO_TOKEN_TAB
                       })}`}
-                      onClick={() => toggle(KEYSTORE_TAB)}
+                      onClick={() => toggle(ZIL_TO_TOKEN_TAB)}
                     >
-                      {'Keystore File'}
+                      {'Zil to Token Swap'}
                     </NavLink>
                   </NavItem>
                   <NavItem>
                     <NavLink
                       className={`cursor-pointer ${classnames({
-                        active: activeTab === PRIVATE_KEY_TAB
+                        active: activeTab === TOKEN_TO_ZIL_TAB
                       })}`}
                       onClick={() => {
-                        toggle(PRIVATE_KEY_TAB);
+                        toggle(TOKEN_TO_ZIL_TAB);
                       }}
                     >
-                      {'Private Key'}
+                      {'Token to Zil Swap'}
                     </NavLink>
                   </NavItem>
                 </Nav>
                 <TabContent activeTab={activeTab}>
-                  <TabPane tabId={KEYSTORE_TAB}>
-                    <AccessKeystore />
+                  <TabPane tabId={ZIL_TO_TOKEN_TAB}>
+                    <SwapZilToToken />
                   </TabPane>
-                  <TabPane tabId={PRIVATE_KEY_TAB}>
-                    <AccessPrivateKey />
+                  <TabPane tabId={TOKEN_TO_ZIL_TAB}>
+                    <SwapTokenToZil />
                   </TabPane>
                 </TabContent>
               </div>

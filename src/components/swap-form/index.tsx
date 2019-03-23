@@ -66,7 +66,7 @@ const initialState: IState = {
   isUpdatingGasPrice: false
 };
 
-const SendForm: React.FunctionComponent<IProps> = (props) => {
+const SwapForm: React.FunctionComponent<IProps> = (props) => {
   const {
     address,
     swapStatus,
@@ -280,4 +280,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SendForm);
+)(SwapForm);

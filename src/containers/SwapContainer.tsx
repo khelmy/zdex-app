@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 import { requestStatus } from '../constants';
 import AccessTabs from '../components/access-tabs';
 import Layout from '../components/layout';
-import SwapForm from '../components/swap-form';
+import SwapTabs from '../components/swap-tabs';
 
 interface IProps {
   history: H.History;
@@ -37,7 +37,7 @@ const SwapContainer: React.FunctionComponent<IProps> = (props) => {
       <Layout>
         <div className="p-4">
           {isAuth ? (
-            <SwapForm />
+            <SwapTabs />
           ) : (
             <div>
               <span className="pl-1 text-secondary">Swap</span>
