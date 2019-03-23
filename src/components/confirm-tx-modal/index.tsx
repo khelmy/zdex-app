@@ -51,16 +51,7 @@ const initialState: IState = {
 };
 
 const SwapModal: React.FunctionComponent<IProps> = (props) => {
-  const {
-    toAddress,
-    amount,
-    gasPrice,
-    isModalOpen,
-    swapId,
-    closeModal,
-    swap,
-    swapStatus
-  } = props;
+  const { toAddress, amount, gasPrice, isModalOpen, swapId, closeModal, swap, swapStatus } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(initialState.isSubmitting);
   const [isComplete, setIsComplete] = useState(initialState.isComplete);
@@ -122,11 +113,7 @@ const SwapModal: React.FunctionComponent<IProps> = (props) => {
             </p>
             {swapId ? (
               <u>
-                <a
-                  target="_blank"
-                  href={`${EXPLORER_URL}/transactions/${swapId}`}
-                  rel="noreferrer"
-                >
+                <a target="_blank" href={`${EXPLORER_URL}/transactions/${swapId}`} rel="noreferrer">
                   {'View Your Transaction'}
                 </a>
               </u>
