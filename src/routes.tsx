@@ -22,6 +22,7 @@ import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import Home from './containers/HomeContainer';
+import CreateContainer from './containers/CreateContainer';
 import LiquidityContainer from './containers/LiquidityContainer';
 import SwapContainer from './containers/SwapContainer';
 import Spinner from './components/spinner';
@@ -29,6 +30,7 @@ import Spinner from './components/spinner';
 export const paths = {
   liquidity: '/liquidity',
   swap: '/swap',
+  create: '/create',
   home: '/home'
 };
 
@@ -37,6 +39,7 @@ export const RouterNode = () => (
     <Suspense fallback={<Spinner />}>
       <Switch>
         <Route exact={true} path={paths.home} component={Home} />
+        <Route exact={true} path={paths.create} component={CreateContainer} />
         <Route exact={true} path={paths.liquidity} component={LiquidityContainer} />
         <Route exact={true} path={paths.swap} component={SwapContainer} />
         <Redirect from="/" to={paths.home} />
