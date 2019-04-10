@@ -59,7 +59,7 @@ const Header: React.FunctionComponent<IProps> = (props) => {
             </NavItem>
             <NavItem className="sidebar-link">
               <Link to={paths.create} className={`nav-link`}>
-                {'Create New Market'}
+                {'Create Market'}
               </Link>
             </NavItem>
             <NavItem className="sidebar-link">
