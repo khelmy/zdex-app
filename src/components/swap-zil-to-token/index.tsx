@@ -223,18 +223,19 @@ const ZilToTokenSwapForm: React.FunctionComponent<IProps> = (props) => {
                         disabled={isUpdatingBalance || isUpdatingMinGasPrice}
                       />
                     </FormGroup>
+                    <br />
                     <FormGroup>
-                      <Label for="amount">
+                      <Label for="minTokens">
                         <small>
                           <b>{'Minimum Tokens to Receive'}</b>
                         </small>
                       </Label>
                       <Input
-                        id="amount"
+                        id="minTokens"
                         type="tel"
-                        name="amount"
+                        name="minTokens"
                         maxLength={10}
-                        data-testid="amount"
+                        data-testid="minTokens"
                         value={minTokens}
                         onChange={changeMinTokens}
                         placeholder="Minimum Tokens Received"

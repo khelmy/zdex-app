@@ -24,15 +24,15 @@ import { Form, FormGroup, Label, Input } from 'reactstrap';
 import Disclaimer from '../disclaimer';
 
 interface IProps {
-  zilToTokenSwap: (tokenAddress, amount, minTokens, gasPrice) => void;
+  tokenToZilSwap: (tokenAddress, tokensSold, minZil, gasPrice) => void;
   isModalOpen: boolean;
   tokenAddress: string;
-  amount: string;
-  minTokens: string;
+  tokensSold: string;
+  minZil: string;
   gasPrice: string;
-  zilToTokenSwapStatus?: string;
+  tokenToZilSwapStatus?: string;
   closeModal: () => void;
-  zilToTokenSwapId?: string;
+  tokenToZilSwapId?: string;
 }
 
 interface IState {
@@ -51,17 +51,17 @@ const initialState: IState = {
   prevSwapStatus: undefined
 };
 
-const ZilToTokenSwapModal: React.FunctionComponent<IProps> = (props) => {
+const TokenToZilSwapModal: React.FunctionComponent<IProps> = (props) => {
   const {
     tokenAddress,
-    amount,
-    minTokens,
+    tokensSold,
+    minZil,
     gasPrice,
     isModalOpen,
-    zilToTokenSwapId,
+    tokenToZilSwapId,
     closeModal,
-    zilToTokenSwap,
-    zilToTokenSwapStatus
+    tokenToZilSwap,
+    tokenToZilSwapStatus
   } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(initialState.isSubmitting);
@@ -74,7 +74,7 @@ const ZilToTokenSwapModal: React.FunctionComponent<IProps> = (props) => {
     () => {
       if (
         prevSwapStatus === requestStatus.PENDING &&
-        zilToTokenSwapStatus === requestStatus.FAILED
+        tokenToZilSwapStatus === requestStatus.FAILED
       ) {
         setIsSubmitting(false);
         setIsComplete(false);
@@ -83,16 +83,16 @@ const ZilToTokenSwapModal: React.FunctionComponent<IProps> = (props) => {
       }
       if (
         prevSwapStatus === requestStatus.PENDING &&
-        zilToTokenSwapStatus === requestStatus.SUCCEED
+        tokenToZilSwapStatus === requestStatus.SUCCEED
       ) {
         setIsSubmitting(false);
         setIsComplete(true);
         setIsFailed(false);
         setIsDisclaimerChecked(false);
       }
-      setPrevSwapStatus(zilToTokenSwapStatus);
+      setPrevSwapStatus(tokenToZilSwapStatus);
     },
-    [zilToTokenSwapStatus, prevSwapStatus]
+    [tokenToZilSwapStatus, prevSwapStatus]
   );
 
   const handleCheck = () => {
@@ -102,7 +102,7 @@ const ZilToTokenSwapModal: React.FunctionComponent<IProps> = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    zilToTokenSwap(tokenAddress, amount, minTokens, gasPrice);
+    tokenToZilSwap(tokenAddress, tokensSold, minZil, gasPrice);
   };
 
   const renderTransactionProcess = () => {
@@ -128,11 +128,11 @@ const ZilToTokenSwapModal: React.FunctionComponent<IProps> = (props) => {
               <br />
               <small>{'Please check after a few minutes.'}</small>
             </p>
-            {zilToTokenSwapId ? (
+            {tokenToZilSwapId ? (
               <u>
                 <a
                   target="_blank"
-                  href={`${EXPLORER_URL}/transactions/${zilToTokenSwapId}`}
+                  href={`${EXPLORER_URL}/transactions/${tokenToZilSwapId}`}
                   rel="noreferrer"
                 >
                   {'View Your Transaction'}
@@ -165,14 +165,14 @@ const ZilToTokenSwapModal: React.FunctionComponent<IProps> = (props) => {
           <span className="font-monospace">{tokenAddress}</span>
           <hr className="my-2" />
           <small className="my-1 text-secondary">
-            <b>{'Amount to Send'}</b>
+            <b>{'Tokens to Send'}</b>
           </small>
-          {amount} ZIL
+          {tokensSold} Tokens
           <hr className="my-2" />
           <small className="my-1 text-secondary">
             <b>{'Minimum Amount to Receive'}</b>
           </small>
-          {minTokens} Tokens
+          {minZil} ZIL
           <hr className="my-2" />
           <small className="my-1 text-secondary">
             <b>{'Gas Price'}</b>
@@ -226,4 +226,4 @@ const ZilToTokenSwapModal: React.FunctionComponent<IProps> = (props) => {
   );
 };
 
-export default ZilToTokenSwapModal;
+export default TokenToZilSwapModal;
