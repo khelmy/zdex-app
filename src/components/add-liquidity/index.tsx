@@ -22,12 +22,12 @@ import Button from '../button';
 import * as zilActions from '../../redux/zil/actions';
 import { connect } from 'react-redux';
 import { getInputValidationState, formatSendAmountInZil } from '../../utils';
-import ConfirmTxModal from '../confirm-tx-modal';
+import ConfirmAddLiquidityModal from '../confirm-add-liquidity-modal';
 import { AccountInfo } from '../account-info';
 import { requestStatus } from '../../constants';
 
 interface IProps {
-  swap: (toAddress, amount, gasPrice) => void;
+  addLiquidity: (tokenAddress, amount, minLiquidity, maxTokens, gasPrice) => void;
   clear: () => void;
   getMinGasPrice: () => void;
   minGasPriceInQa: string;
@@ -35,18 +35,20 @@ interface IProps {
   getBalance: () => void;
   balanceInQa: string;
   getBalanceStatus?: string;
-  swapStatus?: string;
+  addLiquidityStatus?: string;
   publicKey: string;
   address: string;
   network: string;
-  swapId?: string;
+  addLiquidityId?: string;
 }
 
 interface IState {
-  toAddress: string;
-  toAddressValid: boolean;
-  toAddressInvalid: boolean;
+  tokenAddress: string;
+  tokenAddressValid: boolean;
+  tokenAddressInvalid: boolean;
   amount: string;
+  minLiquidity: string;
+  maxTokens: string;
   isSendingTx: boolean;
   gasPrice: string;
   gasPriceInQa: string;
@@ -56,21 +58,23 @@ interface IState {
 
 const initialState: IState = {
   isModalOpen: false,
-  toAddress: '',
-  toAddressValid: false,
-  toAddressInvalid: false,
+  tokenAddress: '',
+  tokenAddressValid: false,
+  tokenAddressInvalid: false,
   amount: '',
+  minLiquidity: '',
+  maxTokens: '',
   isSendingTx: false,
   gasPrice: '0',
   gasPriceInQa: '0',
   isUpdatingGasPrice: false
 };
 
-const SwapForm: React.FunctionComponent<IProps> = (props) => {
+const AddLiquidityForm: React.FunctionComponent<IProps> = (props) => {
   const {
     address,
-    swapStatus,
-    swapId,
+    addLiquidityStatus,
+    addLiquidityId,
     getBalance,
     balanceInQa,
     getBalanceStatus,
@@ -80,10 +84,12 @@ const SwapForm: React.FunctionComponent<IProps> = (props) => {
   } = props;
 
   const [isModalOpen, setIsModalOpen] = useState(initialState.isModalOpen);
-  const [toAddress, setToAddress] = useState(initialState.toAddress);
-  const [toAddressValid, setToAddressValid] = useState(initialState.toAddressValid);
-  const [toAddressInvalid, setToAddressInvalid] = useState(initialState.toAddressInvalid);
+  const [tokenAddress, setTokenAddress] = useState(initialState.tokenAddress);
+  const [tokenAddressValid, setTokenAddressValid] = useState(initialState.tokenAddressValid);
+  const [tokenAddressInvalid, setTokenAddressInvalid] = useState(initialState.tokenAddressInvalid);
   const [amount, setAmount] = useState(initialState.amount);
+  const [minLiquidity, setMinLiquidity] = useState(initialState.minLiquidity);
+  const [maxTokens, setMaxTokens] = useState(initialState.maxTokens);
 
   const isUpdatingBalance = getBalanceStatus === requestStatus.PENDING;
   useEffect(
@@ -109,26 +115,40 @@ const SwapForm: React.FunctionComponent<IProps> = (props) => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setToAddress('');
-    setToAddressValid(false);
-    setToAddressInvalid(false);
+    setTokenAddress('');
+    setTokenAddressValid(false);
+    setTokenAddressInvalid(false);
     setAmount('');
   };
 
-  const changeToAddress = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const changeTokenAddress = (e: React.ChangeEvent<HTMLInputElement>): void => {
     e.preventDefault();
     const value = e.target.value;
-    const key = 'toAddress';
+    const key = 'tokenAddress';
     const validationResult: any = getInputValidationState(key, value, /^0x[a-fA-F0-9]{40}$/);
-    setToAddress(value);
-    setToAddressValid(validationResult.toAddressValid);
-    setToAddressInvalid(validationResult.toAddressInvalid);
+    setTokenAddress(value);
+    setTokenAddressValid(validationResult.tokenAddressValid);
+    setTokenAddressInvalid(validationResult.tokenAddressInvalid);
   };
 
   const changeAmount = (e: React.ChangeEvent<HTMLInputElement>): void => {
     e.preventDefault();
     if (e.target.value === '' || /^\d*\.?\d*$/.test(e.target.value)) {
       setAmount(e.target.value);
+    }
+  };
+
+  const changeMinLiquidity = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    e.preventDefault();
+    if (e.target.value === '' || /^\d*\.?\d*$/.test(e.target.value)) {
+      setMinLiquidity(e.target.value);
+    }
+  };
+
+  const changeMaxTokens = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    e.preventDefault();
+    if (e.target.value === '' || /^\d*\.?\d*$/.test(e.target.value)) {
+      setMaxTokens(e.target.value);
     }
   };
 
@@ -147,9 +167,11 @@ const SwapForm: React.FunctionComponent<IProps> = (props) => {
 
   const isBalanceInsufficient = new BN(balanceInQa).lte(new BN(minGasPriceInQa));
   const isSendButtonDisabled =
-    toAddressInvalid ||
-    toAddress === initialState.toAddress ||
+    tokenAddressInvalid ||
+    tokenAddress === initialState.tokenAddress ||
     amount === initialState.amount ||
+    minLiquidity === initialState.minLiquidity ||
+    maxTokens === initialState.maxTokens ||
     isBalanceInsufficient;
   const sendButtonText = 'Send';
 
@@ -174,18 +196,18 @@ const SwapForm: React.FunctionComponent<IProps> = (props) => {
                     <FormGroup>
                       <Label for="Address">
                         <small>
-                          <b>{'To Address'}</b>
+                          <b>{'Token Address'}</b>
                         </small>
                       </Label>
                       <Input
-                        id="toAddress"
+                        id="tokenAddress"
                         type="text"
-                        name="toAddress"
+                        name="tokenAddress"
                         data-testid="to-address"
-                        value={toAddress}
-                        onChange={changeToAddress}
-                        valid={toAddressValid}
-                        invalid={toAddressInvalid}
+                        value={tokenAddress}
+                        onChange={changeTokenAddress}
+                        valid={tokenAddressValid}
+                        invalid={tokenAddressInvalid}
                         placeholder="Enter the Address to Send"
                         maxLength={42}
                       />
@@ -196,7 +218,7 @@ const SwapForm: React.FunctionComponent<IProps> = (props) => {
                     <FormGroup>
                       <Label for="amount">
                         <small>
-                          <b>{'Amount to Send (ZILs)'}</b>
+                          <b>{'Amount to Send (ZIL)'}</b>
                         </small>
                       </Label>
                       <Input
@@ -209,6 +231,44 @@ const SwapForm: React.FunctionComponent<IProps> = (props) => {
                         onChange={changeAmount}
                         placeholder="Enter the Amount"
                         onBlur={formatAmount}
+                        disabled={isUpdatingBalance || isUpdatingMinGasPrice}
+                      />
+                    </FormGroup>
+                    <br />
+                    <FormGroup>
+                      <Label for="minLiquidity">
+                        <small>
+                          <b>{'Minimum Liquidity Granted'}</b>
+                        </small>
+                      </Label>
+                      <Input
+                        id="minLiquidity"
+                        type="tel"
+                        name="minLiquidity"
+                        maxLength={10}
+                        data-testid="minLiquidity"
+                        value={minLiquidity}
+                        onChange={changeMinLiquidity}
+                        placeholder="Minimum Liquidity Granted"
+                        disabled={isUpdatingBalance || isUpdatingMinGasPrice}
+                      />
+                    </FormGroup>
+                    <br />
+                    <FormGroup>
+                      <Label for="maxTokens">
+                        <small>
+                          <b>{'Maximum Tokens to Send'}</b>
+                        </small>
+                      </Label>
+                      <Input
+                        id="maxTokens"
+                        type="tel"
+                        name="maxTokens"
+                        maxLength={10}
+                        data-testid="maxTokens"
+                        value={maxTokens}
+                        onChange={changeMaxTokens}
+                        placeholder="Maximum Tokens Sent"
                         disabled={isUpdatingBalance || isUpdatingMinGasPrice}
                       />
                     </FormGroup>
@@ -242,14 +302,16 @@ const SwapForm: React.FunctionComponent<IProps> = (props) => {
         </Card>
       </div>
       {isModalOpen ? (
-        <ConfirmTxModal
-          swapId={swapId}
-          swapStatus={swapStatus}
-          toAddress={toAddress}
+        <ConfirmAddLiquidityModal
+          addLiquidityId={addLiquidityId}
+          addLiquidityStatus={addLiquidityStatus}
+          tokenAddress={tokenAddress}
           amount={amount}
+          minLiquidity={minLiquidity}
+          maxTokens={maxTokens}
           gasPrice={minGasPriceInZil}
           isModalOpen={isModalOpen}
-          swap={props.swap}
+          addLiquidity={props.addLiquidity}
           closeModal={closeModal}
         />
       ) : null}
@@ -262,8 +324,8 @@ const mapStateToProps = (state) => ({
   getBalanceStatus: state.zil.getBalanceStatus,
   minGasPriceInQa: state.zil.minGasPriceInQa,
   getMinGasPriceStatus: state.zil.getMinGasPriceStatus,
-  swapStatus: state.zil.swapStatus,
-  swapId: state.zil.swapId,
+  addLiquidityStatus: state.zil.addLiquidityStatus,
+  addLiquidityId: state.zil.addLiquidityId,
   network: state.zil.network,
   address: state.zil.address,
   publicKey: state.zil.publicKey,
@@ -271,7 +333,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  swap: (toAddress, amount) => dispatch(zilActions.swap(toAddress, amount)),
+  addLiquidity: (tokenAddress, amount, minLiquidity, maxTokens) =>
+    dispatch(zilActions.addLiquidity(tokenAddress, amount, minLiquidity, maxTokens)),
   clear: () => dispatch(zilActions.clear()),
   getBalance: () => dispatch(zilActions.getBalance()),
   getMinGasPrice: () => dispatch(zilActions.getMinGasPrice())
@@ -280,4 +343,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SwapForm);
+)(AddLiquidityForm);

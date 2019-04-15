@@ -185,7 +185,7 @@ const ZilToTokenSwapForm: React.FunctionComponent<IProps> = (props) => {
                     <FormGroup>
                       <Label for="Address">
                         <small>
-                          <b>{'To Address'}</b>
+                          <b>{'Token Address'}</b>
                         </small>
                       </Label>
                       <Input

@@ -47,9 +47,9 @@ export const approveToken = (tokenAddress, amount) => ({
 export const ZIL_TO_TOKEN_SWAP = 'ZIL_TO_TOKNE_SWAP';
 export const ZIL_TO_TOKEN_SWAP_SUCCEEDED = 'ZIL_TO_TOKEN_SWAP_SUCCEEDED';
 export const ZIL_TO_TOKEN_SWAP_FAILED = 'ZIL_TO_TOKEN_SWAP_FAILED';
-export const zilToTokenSwap = (toAddress, amount, minTokens) => ({
+export const zilToTokenSwap = (tokenAddress, amount, minTokens) => ({
   type: ZIL_TO_TOKEN_SWAP,
-  payload: { toAddress, amount, minTokens }
+  payload: { tokenAddress, amount, minTokens }
 });
 
 export const TOKEN_TO_ZIL_SWAP = 'TOKEN_TO_ZIL_SWAP';
@@ -83,6 +83,15 @@ export const manageLiquidity = (address, token) => ({
   type: MANAGE_LIQUIDITY,
   payload: { address, token }
 });
+
+export const ADD_LIQUIDITY = 'ADD_LIQUIDITY';
+export const ADD_LIQUIDITY_SUCCEEDED = 'ADD_LIQUIDITY_SUCCEEDED';
+export const ADD_LIQUIDITY_FAILED = 'ADD_LIQUIDITY_FAILED';
+export const addLiquidity = (tokenAddress, amount, minLiquidity, maxTokens) => ({
+  type: ADD_LIQUIDITY,
+  payload: { tokenAddress, amount, minLiquidity, maxTokens }
+});
+
 
 export const GET_BALANCE = 'GET_BALANCE';
 export const GET_BALANCE_SUCCEEDED = 'GET_BALANCE_SUCCEEDED';
