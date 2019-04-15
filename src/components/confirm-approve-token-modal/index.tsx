@@ -51,23 +51,40 @@ const initialState: IState = {
 };
 
 const ApproveTokenModal: React.FunctionComponent<IProps> = (props) => {
-  const { toAddress, amount, gasPrice, isModalOpen, approveTokenId, closeModal, approveToken, approveTokenStatus } = props;
+  const {
+    toAddress,
+    amount,
+    gasPrice,
+    isModalOpen,
+    approveTokenId,
+    closeModal,
+    approveToken,
+    approveTokenStatus
+  } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(initialState.isSubmitting);
   const [isComplete, setIsComplete] = useState(initialState.isComplete);
   const [isFailed, setIsFailed] = useState(initialState.isFailed);
   const [isDisclaimerChecked, setIsDisclaimerChecked] = useState(initialState.isDisclaimerChecked);
-  const [prevApproveTokenStatus, setPrevApproveTokenStatus] = useState(initialState.prevApproveTokenStatus);
+  const [prevApproveTokenStatus, setPrevApproveTokenStatus] = useState(
+    initialState.prevApproveTokenStatus
+  );
 
   useEffect(
     () => {
-      if (prevApproveTokenStatus === requestStatus.PENDING && approveTokenStatus === requestStatus.FAILED) {
+      if (
+        prevApproveTokenStatus === requestStatus.PENDING &&
+        approveTokenStatus === requestStatus.FAILED
+      ) {
         setIsSubmitting(false);
         setIsComplete(false);
         setIsFailed(true);
         setIsDisclaimerChecked(false);
       }
-      if (prevApproveTokenStatus === requestStatus.PENDING && approveTokenStatus === requestStatus.SUCCEED) {
+      if (
+        prevApproveTokenStatus === requestStatus.PENDING &&
+        approveTokenStatus === requestStatus.SUCCEED
+      ) {
         setIsSubmitting(false);
         setIsComplete(true);
         setIsFailed(false);
@@ -113,7 +130,11 @@ const ApproveTokenModal: React.FunctionComponent<IProps> = (props) => {
             </p>
             {approveTokenId ? (
               <u>
-                <a target="_blank" href={`${EXPLORER_URL}/transactions/${approveTokenId}`} rel="noreferrer">
+                <a
+                  target="_blank"
+                  href={`${EXPLORER_URL}/transactions/${approveTokenId}`}
+                  rel="noreferrer"
+                >
                   {'View Your Transaction'}
                 </a>
               </u>

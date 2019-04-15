@@ -28,7 +28,6 @@ export const clear = () => ({
   type: CLEAR
 });
 
-
 export const CREATE_MARKET = 'CREATE_MARKET';
 export const CREATE_MARKET_SUCCEEDED = 'CREATE_MARKET_SUCCEEDED';
 export const CREATE_MARKET_FAILED = 'CREATE_MARKET_FAILED';
@@ -44,7 +43,6 @@ export const approveToken = (tokenAddress, amount) => ({
   type: APPROVE_TOKEN,
   payload: { tokenAddress, amount }
 });
-
 
 export const SWAP = 'SWAP';
 export const SWAP_SUCCEEDED = 'SWAP_SUCCEEDED';
