@@ -21,13 +21,13 @@ import { BN, units } from '@zilliqa-js/util';
 import Button from '../button';
 import * as zilActions from '../../redux/zil/actions';
 import { connect } from 'react-redux';
-import { getInputValidationState, formatSendAmountInZil } from '../../utils';
-import ConfirmTxModal from '../confirm-tx-modal';
+import { getInputValidationState } from '../../utils';
+import ConfirmCreateMarketModal from '../confirm-create-market-modal';
 import { AccountInfo } from '../account-info';
 import { requestStatus } from '../../constants';
 
 interface IProps {
-  swap: (toAddress, amount, gasPrice) => void;
+  createMarket: (tokenAddress, gasPrice) => void;
   clear: () => void;
   getMinGasPrice: () => void;
   minGasPriceInQa: string;
@@ -35,18 +35,17 @@ interface IProps {
   getBalance: () => void;
   balanceInQa: string;
   getBalanceStatus?: string;
-  swapStatus?: string;
+  createMarketStatus?: string;
   publicKey: string;
   address: string;
   network: string;
-  swapId?: string;
+  createMarketId?: string;
 }
 
 interface IState {
-  toAddress: string;
-  toAddressValid: boolean;
-  toAddressInvalid: boolean;
-  amount: string;
+  tokenAddress: string;
+  tokenAddressValid: boolean;
+  tokenAddressInvalid: boolean;
   isSendingTx: boolean;
   gasPrice: string;
   gasPriceInQa: string;
@@ -56,21 +55,20 @@ interface IState {
 
 const initialState: IState = {
   isModalOpen: false,
-  toAddress: '',
-  toAddressValid: false,
-  toAddressInvalid: false,
-  amount: '',
+  tokenAddress: '',
+  tokenAddressValid: false,
+  tokenAddressInvalid: false,
   isSendingTx: false,
   gasPrice: '0',
   gasPriceInQa: '0',
   isUpdatingGasPrice: false
 };
 
-const SwapForm: React.FunctionComponent<IProps> = (props) => {
+const CreateMarketForm: React.FunctionComponent<IProps> = (props) => {
   const {
     address,
-    swapStatus,
-    swapId,
+    createMarketStatus,
+    createMarketId,
     getBalance,
     balanceInQa,
     getBalanceStatus,
@@ -80,10 +78,9 @@ const SwapForm: React.FunctionComponent<IProps> = (props) => {
   } = props;
 
   const [isModalOpen, setIsModalOpen] = useState(initialState.isModalOpen);
-  const [toAddress, setToAddress] = useState(initialState.toAddress);
-  const [toAddressValid, setToAddressValid] = useState(initialState.toAddressValid);
-  const [toAddressInvalid, setToAddressInvalid] = useState(initialState.toAddressInvalid);
-  const [amount, setAmount] = useState(initialState.amount);
+  const [tokenAddress, setTokenAddress] = useState(initialState.tokenAddress);
+  const [tokenAddressValid, setTokenAddressValid] = useState(initialState.tokenAddressValid);
+  const [tokenAddressInvalid, setTokenAddressInvalid] = useState(initialState.tokenAddressInvalid);
 
   const isUpdatingBalance = getBalanceStatus === requestStatus.PENDING;
   useEffect(
@@ -109,47 +106,25 @@ const SwapForm: React.FunctionComponent<IProps> = (props) => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setToAddress('');
-    setToAddressValid(false);
-    setToAddressInvalid(false);
-    setAmount('');
+    setTokenAddress('');
+    setTokenAddressValid(false);
+    setTokenAddressInvalid(false);
   };
 
-  const changeToAddress = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const changeTokenAddress = (e: React.ChangeEvent<HTMLInputElement>): void => {
     e.preventDefault();
     const value = e.target.value;
-    const key = 'toAddress';
+    const key = 'tokenAddress';
     const validationResult: any = getInputValidationState(key, value, /^0x[a-fA-F0-9]{40}$/);
-    setToAddress(value);
-    setToAddressValid(validationResult.toAddressValid);
-    setToAddressInvalid(validationResult.toAddressInvalid);
-  };
-
-  const changeAmount = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    e.preventDefault();
-    if (e.target.value === '' || /^\d*\.?\d*$/.test(e.target.value)) {
-      setAmount(e.target.value);
-    }
-  };
-
-  const formatAmount = (): void => {
-    if (amount !== initialState.amount) {
-      const amountInZil: string = parseFloat(amount).toFixed(3);
-      const balanceInZil: string = units.fromQa(new BN(balanceInQa), units.Units.Zil);
-      const amountFormattedInZil = formatSendAmountInZil(
-        amountInZil,
-        balanceInZil,
-        minGasPriceInZil
-      );
-      setAmount(amountFormattedInZil);
-    }
+    setTokenAddress(value);
+    setTokenAddressValid(validationResult.tokenAddressValid);
+    setTokenAddressInvalid(validationResult.tokenAddressInvalid);
   };
 
   const isBalanceInsufficient = new BN(balanceInQa).lte(new BN(minGasPriceInQa));
   const isSendButtonDisabled =
-    toAddressInvalid ||
-    toAddress === initialState.toAddress ||
-    amount === initialState.amount ||
+    tokenAddressInvalid ||
+    tokenAddress === initialState.tokenAddress ||
     isBalanceInsufficient;
   const sendButtonText = 'Send';
 
@@ -178,43 +153,20 @@ const SwapForm: React.FunctionComponent<IProps> = (props) => {
                         </small>
                       </Label>
                       <Input
-                        id="toAddress"
+                        id="tokenAddress"
                         type="text"
-                        name="toAddress"
+                        name="tokenAddress"
                         data-testid="to-address"
-                        value={toAddress}
-                        onChange={changeToAddress}
-                        valid={toAddressValid}
-                        invalid={toAddressInvalid}
-                        placeholder="Enter the Address to Send"
+                        value={tokenAddress}
+                        onChange={changeTokenAddress}
+                        valid={tokenAddressValid}
+                        invalid={tokenAddressInvalid}
+                        placeholder="Address of Token"
                         maxLength={42}
                       />
                       <FormFeedback>{'invalid address'}</FormFeedback>
                       <FormFeedback valid={true}>{'valid address'}</FormFeedback>
                     </FormGroup>
-                    <br />
-                    <FormGroup>
-                      <Label for="amount">
-                        <small>
-                          <b>{'Initial Liquidity (ZILs)'}</b>
-                        </small>
-                      </Label>
-                      <Input
-                        id="amount"
-                        type="tel"
-                        name="amount"
-                        maxLength={10}
-                        data-testid="amount"
-                        value={amount}
-                        onChange={changeAmount}
-                        placeholder="Enter the Amount"
-                        onBlur={formatAmount}
-                        disabled={isUpdatingBalance || isUpdatingMinGasPrice}
-                      />
-                    </FormGroup>
-                    <small className="text-secondary">
-                      Gas Price: {isUpdatingMinGasPrice ? 'loading...' : `${minGasPriceInZil} ZIL`}
-                    </small>
                     <br />
                     <div className="py-5 text-center">
                       <Button
@@ -242,14 +194,13 @@ const SwapForm: React.FunctionComponent<IProps> = (props) => {
         </Card>
       </div>
       {isModalOpen ? (
-        <ConfirmTxModal
-          swapId={swapId}
-          swapStatus={swapStatus}
-          toAddress={toAddress}
-          amount={amount}
+        <ConfirmCreateMarketModal
+          createMarketId={createMarketId}
+          createMarketStatus={createMarketStatus}
+          tokenAddress={tokenAddress}
           gasPrice={minGasPriceInZil}
           isModalOpen={isModalOpen}
-          swap={props.swap}
+          createMarket={props.createMarket}
           closeModal={closeModal}
         />
       ) : null}
@@ -262,8 +213,8 @@ const mapStateToProps = (state) => ({
   getBalanceStatus: state.zil.getBalanceStatus,
   minGasPriceInQa: state.zil.minGasPriceInQa,
   getMinGasPriceStatus: state.zil.getMinGasPriceStatus,
-  swapStatus: state.zil.swapStatus,
-  swapId: state.zil.swapId,
+  createMarketStatus: state.zil.createMarketStatus,
+  createMarketId: state.zil.createMarketId,
   network: state.zil.network,
   address: state.zil.address,
   publicKey: state.zil.publicKey,
@@ -271,7 +222,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  swap: (toAddress, amount) => dispatch(zilActions.swap(toAddress, amount)),
+  createMarket: (tokenAddress) => dispatch(zilActions.createMarket(tokenAddress)),
   clear: () => dispatch(zilActions.clear()),
   getBalance: () => dispatch(zilActions.getBalance()),
   getMinGasPrice: () => dispatch(zilActions.getMinGasPrice())
@@ -280,4 +231,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SwapForm);
+)(CreateMarketForm);

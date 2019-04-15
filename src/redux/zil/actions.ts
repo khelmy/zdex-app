@@ -44,6 +44,15 @@ export const swap = (toAddress, amount) => ({
   payload: { toAddress, amount }
 });
 
+export const CREATE_MARKET = 'CREATE_MARKET';
+export const CREATE_MARKET_SUCCEEDED = 'CREATE_MARKET_SUCCEEDED';
+export const CREATE_MARKET_FAILED = 'CREATE_MARKET_FAILED';
+export const createMarket = (token) => ({
+  type: CREATE_MARKET,
+  payload: { token }
+});
+
+
 export const GET_BALANCE = 'GET_BALANCE';
 export const GET_BALANCE_SUCCEEDED = 'GET_BALANCE_SUCCEEDED';
 export const GET_BALANCE_FAILED = 'GET_BALANCE_FAILED';
