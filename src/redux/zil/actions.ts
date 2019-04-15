@@ -92,7 +92,6 @@ export const addLiquidity = (tokenAddress, amount, minLiquidity, maxTokens) => (
   payload: { tokenAddress, amount, minLiquidity, maxTokens }
 });
 
-
 export const GET_BALANCE = 'GET_BALANCE';
 export const GET_BALANCE_SUCCEEDED = 'GET_BALANCE_SUCCEEDED';
 export const GET_BALANCE_FAILED = 'GET_BALANCE_FAILED';

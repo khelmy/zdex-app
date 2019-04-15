@@ -74,10 +74,7 @@ const AddLiquidityModal: React.FunctionComponent<IProps> = (props) => {
 
   useEffect(
     () => {
-      if (
-        prevSwapStatus === requestStatus.PENDING &&
-        addLiquidityStatus === requestStatus.FAILED
-      ) {
+      if (prevSwapStatus === requestStatus.PENDING && addLiquidityStatus === requestStatus.FAILED) {
         setIsSubmitting(false);
         setIsComplete(false);
         setIsFailed(true);
