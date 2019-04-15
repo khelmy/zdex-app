@@ -22,12 +22,12 @@ import Button from '../button';
 import * as zilActions from '../../redux/zil/actions';
 import { connect } from 'react-redux';
 import { getInputValidationState, formatSendAmountInZil } from '../../utils';
-import ConfirmTxModal from '../confirm-tx-modal';
+import ConfirmApproveTokenModal from '../confirm-approve-token-modal';
 import { AccountInfo } from '../account-info';
 import { requestStatus } from '../../constants';
 
 interface IProps {
-  swap: (toAddress, amount, gasPrice) => void;
+  approveToken: (toAddress, amount, gasPrice) => void;
   clear: () => void;
   getMinGasPrice: () => void;
   minGasPriceInQa: string;
@@ -35,11 +35,11 @@ interface IProps {
   getBalance: () => void;
   balanceInQa: string;
   getBalanceStatus?: string;
-  swapStatus?: string;
+  approveTokenStatus?: string;
   publicKey: string;
   address: string;
   network: string;
-  swapId?: string;
+  approveTokenId?: string;
 }
 
 interface IState {
@@ -66,11 +66,11 @@ const initialState: IState = {
   isUpdatingGasPrice: false
 };
 
-const SwapForm: React.FunctionComponent<IProps> = (props) => {
+const ApproveTokenForm: React.FunctionComponent<IProps> = (props) => {
   const {
     address,
-    swapStatus,
-    swapId,
+    approveTokenStatus,
+    approveTokenId,
     getBalance,
     balanceInQa,
     getBalanceStatus,
@@ -186,7 +186,7 @@ const SwapForm: React.FunctionComponent<IProps> = (props) => {
                         onChange={changeToAddress}
                         valid={toAddressValid}
                         invalid={toAddressInvalid}
-                        placeholder="Enter the Address to Send"
+                        placeholder="Address of Token"
                         maxLength={42}
                       />
                       <FormFeedback>{'invalid address'}</FormFeedback>
@@ -207,7 +207,7 @@ const SwapForm: React.FunctionComponent<IProps> = (props) => {
                         data-testid="amount"
                         value={amount}
                         onChange={changeAmount}
-                        placeholder="Enter the Amount"
+                        placeholder="Enter the Amount to Approve"
                         onBlur={formatAmount}
                         disabled={isUpdatingBalance || isUpdatingMinGasPrice}
                       />
@@ -242,14 +242,14 @@ const SwapForm: React.FunctionComponent<IProps> = (props) => {
         </Card>
       </div>
       {isModalOpen ? (
-        <ConfirmTxModal
-          swapId={swapId}
-          swapStatus={swapStatus}
+        <ConfirmApproveTokenModal
+          approveTokenId={approveTokenId}
+          approveTokenStatus={approveTokenStatus}
           toAddress={toAddress}
           amount={amount}
           gasPrice={minGasPriceInZil}
           isModalOpen={isModalOpen}
-          swap={props.swap}
+          approveToken={props.approveToken}
           closeModal={closeModal}
         />
       ) : null}
@@ -262,8 +262,8 @@ const mapStateToProps = (state) => ({
   getBalanceStatus: state.zil.getBalanceStatus,
   minGasPriceInQa: state.zil.minGasPriceInQa,
   getMinGasPriceStatus: state.zil.getMinGasPriceStatus,
-  swapStatus: state.zil.swapStatus,
-  swapId: state.zil.swapId,
+  approveTokenStatus: state.zil.approveTokenStatus,
+  approveTokenId: state.zil.approveTokenId,
   network: state.zil.network,
   address: state.zil.address,
   publicKey: state.zil.publicKey,
@@ -271,7 +271,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  swap: (toAddress, amount) => dispatch(zilActions.swap(toAddress, amount)),
+  approveToken: (toAddress, amount) => dispatch(zilActions.approveToken(toAddress, amount)),
   clear: () => dispatch(zilActions.clear()),
   getBalance: () => dispatch(zilActions.getBalance()),
   getMinGasPrice: () => dispatch(zilActions.getMinGasPrice())
@@ -280,4 +280,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SwapForm);
+)(ApproveTokenForm);

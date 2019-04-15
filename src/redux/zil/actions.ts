@@ -28,13 +28,23 @@ export const clear = () => ({
   type: CLEAR
 });
 
-export const MANAGE_LIQUIDITY = 'MANAGE_LIQUIDITY';
-export const MANAGE_LIQUIDITY_SUCCEEDED = 'MANAGE_LIQUIDITY_SUCCEEDED';
-export const MANAGE_LIQUIDITY_FAILED = 'MANAGE_LIQUIDITY_FAILED';
-export const manageLiquidity = (address, token) => ({
-  type: MANAGE_LIQUIDITY,
-  payload: { address, token }
+
+export const CREATE_MARKET = 'CREATE_MARKET';
+export const CREATE_MARKET_SUCCEEDED = 'CREATE_MARKET_SUCCEEDED';
+export const CREATE_MARKET_FAILED = 'CREATE_MARKET_FAILED';
+export const createMarket = (tokenAddress) => ({
+  type: CREATE_MARKET,
+  payload: { tokenAddress }
 });
+
+export const APPROVE_TOKEN = 'APPROVE_TOKEN';
+export const APPROVE_TOKEN_SUCCEEDED = 'APPROVE_TOKEN_SUCCEEDED';
+export const APPROVE_TOKEN_FAILED = 'APPROVE_TOKEN_FAILED';
+export const approveToken = (tokenAddress, amount) => ({
+  type: APPROVE_TOKEN,
+  payload: { tokenAddress, amount }
+});
+
 
 export const SWAP = 'SWAP';
 export const SWAP_SUCCEEDED = 'SWAP_SUCCEEDED';
@@ -44,12 +54,12 @@ export const swap = (toAddress, amount) => ({
   payload: { toAddress, amount }
 });
 
-export const CREATE_MARKET = 'CREATE_MARKET';
-export const CREATE_MARKET_SUCCEEDED = 'CREATE_MARKET_SUCCEEDED';
-export const CREATE_MARKET_FAILED = 'CREATE_MARKET_FAILED';
-export const createMarket = (token) => ({
-  type: CREATE_MARKET,
-  payload: { token }
+export const MANAGE_LIQUIDITY = 'MANAGE_LIQUIDITY';
+export const MANAGE_LIQUIDITY_SUCCEEDED = 'MANAGE_LIQUIDITY_SUCCEEDED';
+export const MANAGE_LIQUIDITY_FAILED = 'MANAGE_LIQUIDITY_FAILED';
+export const manageLiquidity = (address, token) => ({
+  type: MANAGE_LIQUIDITY,
+  payload: { address, token }
 });
 
 export const GET_BALANCE = 'GET_BALANCE';
