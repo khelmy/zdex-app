@@ -50,23 +50,39 @@ const initialState: IState = {
 };
 
 const CreateMarketModal: React.FunctionComponent<IProps> = (props) => {
-  const { tokenAddress, gasPrice, isModalOpen, createMarketId, closeModal, createMarket, createMarketStatus } = props;
+  const {
+    tokenAddress,
+    gasPrice,
+    isModalOpen,
+    createMarketId,
+    closeModal,
+    createMarket,
+    createMarketStatus
+  } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(initialState.isSubmitting);
   const [isComplete, setIsComplete] = useState(initialState.isComplete);
   const [isFailed, setIsFailed] = useState(initialState.isFailed);
   const [isDisclaimerChecked, setIsDisclaimerChecked] = useState(initialState.isDisclaimerChecked);
-  const [prevCreateMarketStatus, setPrevCreateMarketStatus] = useState(initialState.prevCreateMarketStatus);
+  const [prevCreateMarketStatus, setPrevCreateMarketStatus] = useState(
+    initialState.prevCreateMarketStatus
+  );
 
   useEffect(
     () => {
-      if (prevCreateMarketStatus === requestStatus.PENDING && createMarketStatus === requestStatus.FAILED) {
+      if (
+        prevCreateMarketStatus === requestStatus.PENDING &&
+        createMarketStatus === requestStatus.FAILED
+      ) {
         setIsSubmitting(false);
         setIsComplete(false);
         setIsFailed(true);
         setIsDisclaimerChecked(false);
       }
-      if (prevCreateMarketStatus === requestStatus.PENDING && createMarketStatus === requestStatus.SUCCEED) {
+      if (
+        prevCreateMarketStatus === requestStatus.PENDING &&
+        createMarketStatus === requestStatus.SUCCEED
+      ) {
         setIsSubmitting(false);
         setIsComplete(true);
         setIsFailed(false);
@@ -112,7 +128,11 @@ const CreateMarketModal: React.FunctionComponent<IProps> = (props) => {
             </p>
             {createMarketId ? (
               <u>
-                <a target="_blank" href={`${EXPLORER_URL}/transactions/${createMarketId}`} rel="noreferrer">
+                <a
+                  target="_blank"
+                  href={`${EXPLORER_URL}/transactions/${createMarketId}`}
+                  rel="noreferrer"
+                >
                   {'View Your Transaction'}
                 </a>
               </u>

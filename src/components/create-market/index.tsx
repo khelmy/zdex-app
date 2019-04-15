@@ -123,9 +123,7 @@ const CreateMarketForm: React.FunctionComponent<IProps> = (props) => {
 
   const isBalanceInsufficient = new BN(balanceInQa).lte(new BN(minGasPriceInQa));
   const isSendButtonDisabled =
-    tokenAddressInvalid ||
-    tokenAddress === initialState.tokenAddress ||
-    isBalanceInsufficient;
+    tokenAddressInvalid || tokenAddress === initialState.tokenAddress || isBalanceInsufficient;
   const sendButtonText = 'Send';
 
   return (
