@@ -24,9 +24,9 @@ import { Form, FormGroup, Label, Input } from 'reactstrap';
 import Disclaimer from '../disclaimer';
 
 interface IProps {
-  approveToken: (toAddress, amount, gasPrice) => void;
+  approveToken: (tokenAddress, amount, gasPrice) => void;
   isModalOpen: boolean;
-  toAddress: string;
+  tokenAddress: string;
   amount: string;
   gasPrice: string;
   approveTokenStatus?: string;
@@ -52,7 +52,7 @@ const initialState: IState = {
 
 const ApproveTokenModal: React.FunctionComponent<IProps> = (props) => {
   const {
-    toAddress,
+    tokenAddress,
     amount,
     gasPrice,
     isModalOpen,
@@ -102,7 +102,7 @@ const ApproveTokenModal: React.FunctionComponent<IProps> = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    approveToken(toAddress, amount, gasPrice);
+    approveToken(tokenAddress, amount, gasPrice);
   };
 
   const renderTransactionProcess = () => {
@@ -162,7 +162,7 @@ const ApproveTokenModal: React.FunctionComponent<IProps> = (props) => {
           <small className="my-1 text-secondary">
             <b>{'To Address'}</b>
           </small>
-          <span className="font-monospace">{toAddress}</span>
+          <span className="font-monospace">{tokenAddress}</span>
           <hr className="my-2" />
           <small className="my-1 text-secondary">
             <b>{'Amount to Approve'}</b>

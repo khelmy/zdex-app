@@ -27,7 +27,7 @@ import { AccountInfo } from '../account-info';
 import { requestStatus } from '../../constants';
 
 interface IProps {
-  approveToken: (toAddress, amount, gasPrice) => void;
+  approveToken: (tokenAddress, amount, gasPrice) => void;
   clear: () => void;
   getMinGasPrice: () => void;
   minGasPriceInQa: string;
@@ -43,9 +43,9 @@ interface IProps {
 }
 
 interface IState {
-  toAddress: string;
-  toAddressValid: boolean;
-  toAddressInvalid: boolean;
+  tokenAddress: string;
+  tokenAddressValid: boolean;
+  tokenAddressInvalid: boolean;
   amount: string;
   isSendingTx: boolean;
   gasPrice: string;
@@ -56,9 +56,9 @@ interface IState {
 
 const initialState: IState = {
   isModalOpen: false,
-  toAddress: '',
-  toAddressValid: false,
-  toAddressInvalid: false,
+  tokenAddress: '',
+  tokenAddressValid: false,
+  tokenAddressInvalid: false,
   amount: '',
   isSendingTx: false,
   gasPrice: '0',
@@ -80,9 +80,9 @@ const ApproveTokenForm: React.FunctionComponent<IProps> = (props) => {
   } = props;
 
   const [isModalOpen, setIsModalOpen] = useState(initialState.isModalOpen);
-  const [toAddress, setToAddress] = useState(initialState.toAddress);
-  const [toAddressValid, setToAddressValid] = useState(initialState.toAddressValid);
-  const [toAddressInvalid, setToAddressInvalid] = useState(initialState.toAddressInvalid);
+  const [tokenAddress, setTokenAddress] = useState(initialState.tokenAddress);
+  const [tokenAddressValid, setTokenAddressValid] = useState(initialState.tokenAddressValid);
+  const [tokenAddressInvalid, setTokenAddressInvalid] = useState(initialState.tokenAddressInvalid);
   const [amount, setAmount] = useState(initialState.amount);
 
   const isUpdatingBalance = getBalanceStatus === requestStatus.PENDING;
@@ -109,20 +109,20 @@ const ApproveTokenForm: React.FunctionComponent<IProps> = (props) => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setToAddress('');
-    setToAddressValid(false);
-    setToAddressInvalid(false);
+    setTokenAddress('');
+    setTokenAddressValid(false);
+    setTokenAddressInvalid(false);
     setAmount('');
   };
 
-  const changeToAddress = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const changeTokenAddress = (e: React.ChangeEvent<HTMLInputElement>): void => {
     e.preventDefault();
     const value = e.target.value;
-    const key = 'toAddress';
+    const key = 'tokenAddress';
     const validationResult: any = getInputValidationState(key, value, /^0x[a-fA-F0-9]{40}$/);
-    setToAddress(value);
-    setToAddressValid(validationResult.toAddressValid);
-    setToAddressInvalid(validationResult.toAddressInvalid);
+    setTokenAddress(value);
+    setTokenAddressValid(validationResult.tokenAddressValid);
+    setTokenAddressInvalid(validationResult.tokenAddressInvalid);
   };
 
   const changeAmount = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -147,8 +147,8 @@ const ApproveTokenForm: React.FunctionComponent<IProps> = (props) => {
 
   const isBalanceInsufficient = new BN(balanceInQa).lte(new BN(minGasPriceInQa));
   const isSendButtonDisabled =
-    toAddressInvalid ||
-    toAddress === initialState.toAddress ||
+    tokenAddressInvalid ||
+    tokenAddress === initialState.tokenAddress ||
     amount === initialState.amount ||
     isBalanceInsufficient;
   const sendButtonText = 'Send';
@@ -178,14 +178,14 @@ const ApproveTokenForm: React.FunctionComponent<IProps> = (props) => {
                         </small>
                       </Label>
                       <Input
-                        id="toAddress"
+                        id="tokenAddress"
                         type="text"
-                        name="toAddress"
+                        name="tokenAddress"
                         data-testid="to-address"
-                        value={toAddress}
-                        onChange={changeToAddress}
-                        valid={toAddressValid}
-                        invalid={toAddressInvalid}
+                        value={tokenAddress}
+                        onChange={changeTokenAddress}
+                        valid={tokenAddressValid}
+                        invalid={tokenAddressInvalid}
                         placeholder="Address of Token"
                         maxLength={42}
                       />
@@ -245,7 +245,7 @@ const ApproveTokenForm: React.FunctionComponent<IProps> = (props) => {
         <ConfirmApproveTokenModal
           approveTokenId={approveTokenId}
           approveTokenStatus={approveTokenStatus}
-          toAddress={toAddress}
+          tokenAddress={tokenAddress}
           amount={amount}
           gasPrice={minGasPriceInZil}
           isModalOpen={isModalOpen}
@@ -271,7 +271,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  approveToken: (toAddress, amount) => dispatch(zilActions.approveToken(toAddress, amount)),
+  approveToken: (tokenAddress, amount) => dispatch(zilActions.approveToken(tokenAddress, amount)),
   clear: () => dispatch(zilActions.clear()),
   getBalance: () => dispatch(zilActions.getBalance()),
   getMinGasPrice: () => dispatch(zilActions.getMinGasPrice())
