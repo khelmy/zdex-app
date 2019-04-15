@@ -44,6 +44,14 @@ export const approveToken = (tokenAddress, amount) => ({
   payload: { tokenAddress, amount }
 });
 
+export const ZIL_TO_TOKEN_SWAP = 'ZIL_TO_TOKNE_SWAP';
+export const ZIL_TO_TOKEN_SWAP_SUCCEEDED = 'ZIL_TO_TOKEN_SWAP_SUCCEEDED';
+export const ZIL_TO_TOKEN_SWAP_FAILED = 'ZIL_TO_TOKEN_SWAP_FAILED';
+export const zilToTokenSwap = (toAddress, amount, minTokens) => ({
+  type: ZIL_TO_TOKEN_SWAP,
+  payload: { toAddress, amount, minTokens }
+});
+
 export const SWAP = 'SWAP';
 export const SWAP_SUCCEEDED = 'SWAP_SUCCEEDED';
 export const SWAP_FAILED = 'SWAP_FAILED';
