@@ -74,7 +74,10 @@ const RemoveLiquidityModal: React.FunctionComponent<IProps> = (props) => {
 
   useEffect(
     () => {
-      if (prevSwapStatus === requestStatus.PENDING && removeLiquidityStatus === requestStatus.FAILED) {
+      if (
+        prevSwapStatus === requestStatus.PENDING &&
+        removeLiquidityStatus === requestStatus.FAILED
+      ) {
         setIsSubmitting(false);
         setIsComplete(false);
         setIsFailed(true);
