@@ -52,7 +52,17 @@ const initialState: IState = {
 };
 
 const SwapModal: React.FunctionComponent<IProps> = (props) => {
-  const { tokenAddress, amount, minTokens, gasPrice, isModalOpen, zilToTokenSwapId, closeModal, zilToTokenSwap, zilToTokenSwapStatus } = props;
+  const {
+    tokenAddress,
+    amount,
+    minTokens,
+    gasPrice,
+    isModalOpen,
+    zilToTokenSwapId,
+    closeModal,
+    zilToTokenSwap,
+    zilToTokenSwapStatus
+  } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(initialState.isSubmitting);
   const [isComplete, setIsComplete] = useState(initialState.isComplete);
@@ -62,13 +72,19 @@ const SwapModal: React.FunctionComponent<IProps> = (props) => {
 
   useEffect(
     () => {
-      if (prevSwapStatus === requestStatus.PENDING && zilToTokenSwapStatus === requestStatus.FAILED) {
+      if (
+        prevSwapStatus === requestStatus.PENDING &&
+        zilToTokenSwapStatus === requestStatus.FAILED
+      ) {
         setIsSubmitting(false);
         setIsComplete(false);
         setIsFailed(true);
         setIsDisclaimerChecked(false);
       }
-      if (prevSwapStatus === requestStatus.PENDING && zilToTokenSwapStatus === requestStatus.SUCCEED) {
+      if (
+        prevSwapStatus === requestStatus.PENDING &&
+        zilToTokenSwapStatus === requestStatus.SUCCEED
+      ) {
         setIsSubmitting(false);
         setIsComplete(true);
         setIsFailed(false);
@@ -114,7 +130,11 @@ const SwapModal: React.FunctionComponent<IProps> = (props) => {
             </p>
             {zilToTokenSwapId ? (
               <u>
-                <a target="_blank" href={`${EXPLORER_URL}/transactions/${zilToTokenSwapId}`} rel="noreferrer">
+                <a
+                  target="_blank"
+                  href={`${EXPLORER_URL}/transactions/${zilToTokenSwapId}`}
+                  rel="noreferrer"
+                >
                   {'View Your Transaction'}
                 </a>
               </u>
