@@ -92,6 +92,14 @@ export const addLiquidity = (tokenAddress, amount, minLiquidity, maxTokens) => (
   payload: { tokenAddress, amount, minLiquidity, maxTokens }
 });
 
+export const REMOVE_LIQUIDITY = 'REMOVE_LIQUIDITY';
+export const REMOVE_LIQUIDITY_SUCCEEDED = 'REMOVE_LIQUIDITY';
+export const REMOVE_LIQUIDITY_FAILED = 'REMOVE_LIQUIDITY';
+export const removeLiquidity = (tokenAddress, amount, minZil, minTokens) => ({
+  type: REMOVE_LIQUIDITY,
+  payload: { tokenAddress, amount, minZil, minTokens }
+});
+
 export const GET_BALANCE = 'GET_BALANCE';
 export const GET_BALANCE_SUCCEEDED = 'GET_BALANCE_SUCCEEDED';
 export const GET_BALANCE_FAILED = 'GET_BALANCE_FAILED';
