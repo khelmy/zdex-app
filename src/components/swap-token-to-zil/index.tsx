@@ -302,7 +302,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  tokenToZilSwap: (tokenAddress, tokensSold, minZil) => dispatch(zilActions.tokenToZilSwap(tokenAddress, tokensSold, minZil)),
+  tokenToZilSwap: (tokenAddress, tokensSold, minZil) =>
+    dispatch(zilActions.tokenToZilSwap(tokenAddress, tokensSold, minZil)),
   clear: () => dispatch(zilActions.clear()),
   getBalance: () => dispatch(zilActions.getBalance()),
   getMinGasPrice: () => dispatch(zilActions.getMinGasPrice())
