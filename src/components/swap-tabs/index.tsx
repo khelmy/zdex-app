@@ -23,9 +23,11 @@ import './style.css';
 
 import SwapZilToToken from '../swap-zil-to-token';
 import SwapTokenToZil from '../swap-token-to-zil';
+import AuthorizeZDEX from '../authorize-zdex';
 
 const ZIL_TO_TOKEN_TAB = '0';
 const TOKEN_TO_ZIL_TAB = '1';
+const AUTHORIZE_ZDEX_TAB = '2';
 
 const AccessTabs: React.FunctionComponent = () => {
   const [activeTab, setActiveTab] = useState(ZIL_TO_TOKEN_TAB);
@@ -70,6 +72,18 @@ const AccessTabs: React.FunctionComponent = () => {
                       {'Token to Zil Swap'}
                     </NavLink>
                   </NavItem>
+                  <NavItem>
+                    <NavLink
+                      className={`cursor-pointer ${classnames({
+                        active: activeTab === AUTHORIZE_ZDEX_TAB
+                      })}`}
+                      onClick={() => {
+                        toggle(AUTHORIZE_ZDEX_TAB);
+                      }}
+                    >
+                      {'Authorize ZDEX'}
+                    </NavLink>
+                  </NavItem>
                 </Nav>
                 <TabContent activeTab={activeTab}>
                   <TabPane tabId={ZIL_TO_TOKEN_TAB}>
@@ -77,6 +91,9 @@ const AccessTabs: React.FunctionComponent = () => {
                   </TabPane>
                   <TabPane tabId={TOKEN_TO_ZIL_TAB}>
                     <SwapTokenToZil />
+                  </TabPane>
+                  <TabPane tabId={AUTHORIZE_ZDEX_TAB}>
+                    <AuthorizeZDEX />
                   </TabPane>
                 </TabContent>
               </div>
