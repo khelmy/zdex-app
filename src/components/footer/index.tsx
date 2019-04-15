@@ -27,34 +27,12 @@ const Footer: React.SFC = () => (
         <li className="nav-item">
           <a
             className="text-secondary nav-link"
-            href="https://github.com/Zilliqa"
+            href="https://github.com/khelmy/zdex"
             target="_blank"
             rel="noreferrer"
-            aria-label={'Zilliqa GitHub'}
+            aria-label={'ZDEX GitHub'}
           >
             <FaGithub />
-          </a>
-        </li>
-        <li className="nav-item">
-          <a
-            className="text-secondary nav-link"
-            href="https://gitter.im/Zilliqa"
-            target="_blank"
-            rel="noreferrer"
-            aria-label={'Zilliqa Gitter'}
-          >
-            <FaGitter />
-          </a>
-        </li>
-        <li className="nav-item">
-          <a
-            className="text-secondary nav-link"
-            href="https://twitter.com/zilliqa"
-            target="_blank"
-            rel="noreferrer"
-            aria-label={'Zilliqa Twitter'}
-          >
-            <FaTwitter />
           </a>
         </li>
       </ul>

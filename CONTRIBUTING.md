@@ -4,9 +4,9 @@ We welcome contributions from anyone on the internet and are grateful for even t
 
 ### Getting started
 
-1.  Fork `Zilliqa/zdex-app`
+1.  Fork `khelmy/zdex-app`
 2.  Clone your fork
-3.  Follow the [installation & build steps](https://github.com/Zilliqa/zdex-app#installation-and-usage) in the repo's top-level README.
+3.  Follow the [installation & build steps](https://github.com/khelmy/zdex-app#installation-and-usage) in the repo's top-level README.
 4.  Setup the recommended [Development Tooling](#development-tooling).
 5.  Open a PR against the `development` branch and describe the change you are intending to undertake in the PR description. (see [our branch naming conventions](#branch-structure))
 
@@ -25,11 +25,10 @@ We strongly recommend you use the [VSCode](https://code.visualstudio.com/) text 
 
 #### Linter
 
-We use [TSLint](https://palantir.github.io/tslint/) with [custom configs](https://github.com/Zilliqa/zdex-app/blob/master/tslint.json) to keep our code-style consistent.
+We use [TSLint](https://palantir.github.io/tslint/) with [custom configs](https://github.com/khelmy/zdex-app/blob/master/tslint.json) to keep our code-style consistent.
 
 #### Auto-formatter
 
 We use [Prettier](https://prettier.io/) to auto-format our code. Be sure to either add a [text editor integration](https://prettier.io/docs/en/editors.html) or a [pre-commit hook](https://prettier.io/docs/en/precommit.html) to properly format your code changes.
 
 -   VSCode: [prettier-vscode](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-

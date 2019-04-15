@@ -36,7 +36,7 @@ addDecorator(
      * URL for name in top left corner to link to
      * @type {String}
      */
-    url: 'https://github.com/zilliqa/zdex-app'
+    url: 'https://github.com/khelmy/zdex-app'
   })
 );
 
