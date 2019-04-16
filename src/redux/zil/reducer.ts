@@ -68,6 +68,132 @@ export default function zil(state = initialState, action) {
         privateKey: undefined,
         authStatus: requestStatus.FAILED
       };
+    case consts.CREATE_MARKET:
+      return {
+        ...state,
+        createMarketStatus: requestStatus.PENDING,
+        createMarketId: undefined
+      };
+    case consts.CREATE_MARKET_SUCCEEDED:
+      return {
+        ...state,
+        createMarketStatus: requestStatus.SUCCEED,
+        createMarketId: action.payload.createMarketId
+      };
+    case consts.CREATE_MARKET_FAILED:
+      return {
+        ...state,
+        createMarketStatus: requestStatus.FAILED,
+        createMarketId: undefined
+      };
+    case consts.APPROVE_TOKEN:
+      return {
+        ...state,
+        approveTokenStatus: requestStatus.PENDING,
+        approveTokenId: undefined
+      };
+    case consts.APPROVE_TOKEN_SUCCEEDED:
+      return {
+        ...state,
+        approveTokenStatus: requestStatus.SUCCEED,
+        approveTokenId: action.payload.approveTokenId
+      };
+    case consts.APPROVE_TOKEN_FAILED:
+      return {
+        ...state,
+        approveTokenStatus: requestStatus.FAILED,
+        approveTokenId: undefined
+      };
+    case consts.ZIL_TO_TOKEN_SWAP:
+      return {
+        ...state,
+        zilToTokenSwapStatus: requestStatus.PENDING,
+        zilToTokenSwapId: undefined
+      };
+    case consts.ZIL_TO_TOKEN_SWAP_SUCCEEDED:
+      return {
+        ...state,
+        zilToTokenSwapStatus: requestStatus.SUCCEED,
+        zilToTokenSwapId: action.payload.zilToTokenSwapId
+      };
+    case consts.ZIL_TO_TOKEN_SWAP_FAILED:
+      return {
+        ...state,
+        zilToTokenSwapStatus: requestStatus.FAILED,
+        zilToTokenSwapId: undefined
+      };
+    case consts.TOKEN_TO_ZIL_SWAP:
+      return {
+        ...state,
+        tokenToZilSwapStatus: requestStatus.PENDING,
+        tokenToZilSwapId: undefined
+      };
+    case consts.TOKEN_TO_ZIL_SWAP_SUCCEEDED:
+      return {
+        ...state,
+        tokenToZilSwapStatus: requestStatus.SUCCEED,
+        tokenToZilSwapId: action.payload.tokenToZilSwapId
+      };
+    case consts.TOKEN_TO_ZIL_SWAP_FAILED:
+      return {
+        ...state,
+        tokenToZilSwapStatus: requestStatus.FAILED,
+        tokenToZilSwapId: undefined
+      };
+    case consts.AUTHORIZE_ZDEX:
+      return {
+        ...state,
+        authorizeZDEXStatus: requestStatus.PENDING,
+        authorizeZDEXId: undefined
+      };
+    case consts.AUTHORIZE_ZDEX_SUCCEEDED:
+      return {
+        ...state,
+        authorizeZDEXStatus: requestStatus.SUCCEED,
+        authorizeZDEXId: action.payload.authorizeZDEXId
+      };
+    case consts.AUTHORIZE_ZDEX_FAILED:
+      return {
+        ...state,
+        authorizeZDEXStatus: requestStatus.FAILED,
+        authorizeZDEXId: undefined
+      };
+    case consts.ADD_LIQUIDITY:
+      return {
+        ...state,
+        addLiquidityStatus: requestStatus.PENDING,
+        addLiquidityId: undefined
+      };
+    case consts.ADD_LIQUIDITY_SUCCEEDED:
+      return {
+        ...state,
+        addLiquidityStatus: requestStatus.SUCCEED,
+        addLiquidityId: action.payload.addLiquidityId
+      };
+    case consts.ADD_LIQUIDITY_FAILED:
+      return {
+        ...state,
+        addLiquidityStatus: requestStatus.FAILED,
+        addLiquidityId: undefined
+      };
+    case consts.REMOVE_LIQUIDITY:
+      return {
+        ...state,
+        removeLiquidityStatus: requestStatus.PENDING,
+        removeLiquidityId: undefined
+      };
+    case consts.REMOVE_LIQUIDITY_SUCCEEDED:
+      return {
+        ...state,
+        removeLiquidityStatus: requestStatus.SUCCEED,
+        removeLiquidityId: action.payload.removeLiquidityId
+      };
+    case consts.REMOVE_LIQUIDITY_FAILED:
+      return {
+        ...state,
+        removeLiquidityStatus: requestStatus.FAILED,
+        removeLiquidityId: undefined
+      };
     case consts.MANAGE_LIQUIDITY:
       return {
         ...state,
