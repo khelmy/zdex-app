@@ -25,8 +25,8 @@ function* rootSaga() {
     zilSagas.watchGetMinGasPriceSaga(),
     zilSagas.watchGetBalanceSaga(),
     zilSagas.watchAccessWalletSaga(),
-    zilSagas.watchSwapSaga(),
-    zilSagas.watchManageLiquiditySaga()
+    zilSagas.watchZilToTokenSwapSaga(),
+    zilSagas.watchTokenToZilSwapSaga()
   ]);
 }
 

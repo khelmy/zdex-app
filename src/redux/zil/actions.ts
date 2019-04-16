@@ -60,28 +60,12 @@ export const tokenToZilSwap = (tokenAddress, tokensSold, minZil) => ({
   payload: { tokenAddress, tokensSold, minZil }
 });
 
-export const SWAP = 'SWAP';
-export const SWAP_SUCCEEDED = 'SWAP_SUCCEEDED';
-export const SWAP_FAILED = 'SWAP_FAILED';
-export const swap = (toAddress, amount) => ({
-  type: SWAP,
-  payload: { toAddress, amount }
-});
-
 export const AUTHORIZE_ZDEX = 'AUTHORIZE_ZDEX';
 export const AUTHORIZE_ZDEX_SUCCEEDED = 'AUTHORIZE_ZDEX_SUCCEEDED';
 export const AUTHORIZE_ZDEX_FAILED = 'AUTHORIZE_ZDEX_FAILED';
 export const authorizeZDEX = (tokenAddress, amount) => ({
   type: AUTHORIZE_ZDEX,
   payload: { tokenAddress, amount }
-});
-
-export const MANAGE_LIQUIDITY = 'MANAGE_LIQUIDITY';
-export const MANAGE_LIQUIDITY_SUCCEEDED = 'MANAGE_LIQUIDITY_SUCCEEDED';
-export const MANAGE_LIQUIDITY_FAILED = 'MANAGE_LIQUIDITY_FAILED';
-export const manageLiquidity = (address, token) => ({
-  type: MANAGE_LIQUIDITY,
-  payload: { address, token }
 });
 
 export const ADD_LIQUIDITY = 'ADD_LIQUIDITY';

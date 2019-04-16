@@ -194,42 +194,6 @@ export default function zil(state = initialState, action) {
         removeLiquidityStatus: requestStatus.FAILED,
         removeLiquidityId: undefined
       };
-    case consts.MANAGE_LIQUIDITY:
-      return {
-        ...state,
-        faucetStatus: requestStatus.PENDING,
-        faucetTxId: undefined
-      };
-    case consts.MANAGE_LIQUIDITY_SUCCEEDED:
-      return {
-        ...state,
-        faucetStatus: requestStatus.SUCCEED,
-        faucetTxId: action.payload.faucetTxId
-      };
-    case consts.MANAGE_LIQUIDITY_FAILED:
-      return {
-        ...state,
-        faucetStatus: requestStatus.FAILED,
-        faucetTxId: undefined
-      };
-    case consts.SWAP:
-      return {
-        ...state,
-        swapStatus: requestStatus.PENDING,
-        swapId: undefined
-      };
-    case consts.SWAP_SUCCEEDED:
-      return {
-        ...state,
-        swapStatus: requestStatus.SUCCEED,
-        swapId: action.payload.swapId
-      };
-    case consts.SWAP_FAILED:
-      return {
-        ...state,
-        swapStatus: requestStatus.FAILED,
-        swapId: undefined
-      };
     case consts.GET_BALANCE:
       return {
         ...state,

@@ -20,7 +20,7 @@ import { delay, select, put, takeLatest } from 'redux-saga/effects';
 import { getAddressFromPrivateKey, getPubKeyFromPrivateKey } from '@zilliqa-js/crypto';
 import { Long, bytes, units, BN } from '@zilliqa-js/util';
 import { RPCMethod } from '@zilliqa-js/core';
-import { Transaction } from '@zilliqa-js/account';
+import { Transaction, TxStatus } from '@zilliqa-js/account';
 
 import axios from 'axios';
 
@@ -29,6 +29,10 @@ import { HOST } from '../../api';
 import { CHAIN_ID, MSG_VERSION } from '../../constants';
 
 const VERSION = bytes.pack(CHAIN_ID, MSG_VERSION);
+const hubAddress = 'bb13aa89cac6e3d359b7636cdfaec4fdd478b002';
+const lmAddress = '3e5fae8f17e659f672eb816f1b2395f4c994bf99';
+const ztAddress = '8ae7d36ac087eb394aca6242f897cedd05261e04';
+const tzAddress = '8b723418c2fece8655bbe3cbdd0b6ba8dcecde86';
 
 const getZilState = (state) => state.zil;
 
@@ -61,97 +65,150 @@ export function* watchAccessWalletSaga() {
   yield takeLatest(consts.ACCESS_WALLET, accessWalletSaga);
 }
 
-export function* swapSaga(action) {
+function* callTransition(transition, toAddr, amount, params) {
+  const zilState = yield select(getZilState);
+  const { zilliqa, provider, privateKey, address, publicKey } = zilState;
+
+  const response = yield zilliqa.blockchain.getMinimumGasPrice();
+  const minGasPriceInQa: string = response.result;
+
+  const nonceResponse = yield zilliqa.blockchain.getBalance(address);
+  const nonceData = nonceResponse.result.nonce || { nonce: 0 };
+  const nonce: number = nonceData.nonce + 1;
+
+  const wallet = zilliqa.wallet;
+  wallet.addByPrivateKey(privateKey);
+
+  const txData = {
+    _tag: transition,
+    params
+  };
+
+  const tx = new Transaction(
+    {
+      version: VERSION,
+      toAddr,
+      amount: units.toQa(amount, units.Units.Zil),
+      gasPrice: new BN(minGasPriceInQa),
+      gasLimit: Long.fromNumber(10000),
+      pubKey: publicKey,
+      nonce,
+      data: JSON.stringify(txData)
+    },
+    provider,
+    TxStatus.Initialised,
+    true
+  );
+  const signedTx = yield wallet.sign(tx);
+  const { txParams } = signedTx;
+
+  // Send a transaction to the network
+  const data = yield provider.send(RPCMethod.CreateTransaction, txParams);
+
+  /*
+    const msg = ({
+      version: VERSION,
+      toAddr: toAddr,
+      amount: units.toQa(amount, units.Units.Zil),
+      gasPrice: new BN(minGasPriceInQa),
+      gasLimit: Long.fromNumber(10000),
+      pubKey: publicKey,
+      nonce: nonce,
+      data: JSON.stringify(txData)
+    });
+    let tx = zilliqa.transactions.new(msg, true);
+    // const signedTx = yield wallet.sign(tx);
+    const data = yield zilliqa.blockchain.createTransaction(tx, 33, 1000);
+    */
+
+  // const ctr = zilliqa.contracts.at(toAddr);
+  // const data = yield ctr.call(transition, txData, args, 33, 1000, true);
+  if (data.error !== undefined) {
+    throw Error(data.error.message);
+  }
+
+  const id = data.result.TranID;
+  console.log(data.result);
+  return id;
+}
+
+export function* zilToTokenSwapSaga(action) {
   // debounce by 500ms
   yield delay(500);
   try {
     const { payload } = action;
-    const { toAddress, amount } = payload;
-
-    const zilState = yield select(getZilState);
-    const { zilliqa, provider, privateKey, address, publicKey } = zilState;
-
-    const response = yield zilliqa.blockchain.getMinimumGasPrice();
-    const minGasPriceInQa: string = response.result;
-
-    const nonceResponse = yield zilliqa.blockchain.getBalance(address);
-    const nonceData = nonceResponse.result.nonce || { nonce: 0 };
-    const nonce: number = nonceData.nonce + 1;
-
-    const toAddr = toAddress.toLowerCase().replace('0x', '');
-    const wallet = zilliqa.wallet;
-    wallet.addByPrivateKey(privateKey);
-
-    const tx = new Transaction(
+    const { tokenAddress, amount, minTokens } = payload;
+    const params = [
       {
-        version: VERSION,
-        toAddr,
-        amount: units.toQa(amount, units.Units.Zil),
-        gasPrice: new BN(minGasPriceInQa),
-        gasLimit: Long.fromNumber(1),
-        pubKey: publicKey,
-        nonce
+        vname: 'token',
+        type: 'ByStr20',
+        value: tokenAddress
       },
-      provider
+      {
+        vname: 'min_tokens',
+        type: 'Uint128',
+        value: `${minTokens}`
+      },
+      {
+        vname: 'deadline',
+        type: 'BNum',
+        value: `${5e20}`
+      }
+    ];
+    const zilToTokenSwapId = yield* callTransition(
+      'ZilToTokenSwapInput',
+      hubAddress,
+      amount,
+      params
     );
-
-    const signedTx = yield wallet.sign(tx);
-    const { txParams } = signedTx;
-
-    // Send a transaction to the network
-    const data = yield provider.send(RPCMethod.CreateTransaction, txParams);
-
-    if (data.error !== undefined) {
-      throw Error(data.error.message);
-    }
-
-    const swapId = data.result.TranID;
-
     yield put({
-      type: consts.SWAP_SUCCEEDED,
-      payload: { swapId }
+      type: consts.ZIL_TO_TOKEN_SWAP_SUCCEEDED,
+      payload: { zilToTokenSwapId }
     });
   } catch (error) {
     console.log(error);
-    yield put({ type: consts.SWAP_FAILED });
+    yield put({ type: consts.ZIL_TO_TOKEN_SWAP_FAILED });
   }
 }
-export function* watchSwapSaga() {
-  yield takeLatest(consts.SWAP, swapSaga);
+export function* watchZilToTokenSwapSaga() {
+  yield takeLatest(consts.ZIL_TO_TOKEN_SWAP, zilToTokenSwapSaga);
 }
 
-export function* manageLiquidity(action) {
+export function* tokenToZilSwapSaga(action) {
   // debounce by 500ms
   yield delay(500);
   try {
     const { payload } = action;
-    const { address, token } = payload;
-
-    const url = `${HOST}/faucet/run`;
-    const headers = {
-      'Content-Type': 'application/json'
-    };
-    const data = JSON.stringify({ address, token });
-
-    const res = yield axios({
-      method: 'post',
-      url,
-      headers,
-      data
-    });
-
-    const faucetTxId = res.data.txId;
+    const { tokenAddress, tokensSold, minZil } = payload;
+    const params = [
+      {
+        vname: 'tokens_sold',
+        type: 'ByStr20',
+        value: tokenAddress
+      },
+      {
+        vname: 'min_zil',
+        type: 'Uint128',
+        value: `${minZil}`
+      },
+      {
+        vname: 'deadline',
+        type: 'BNum',
+        value: `${5e20}`
+      }
+    ];
+    const tokenToZilSwapId = yield* callTransition('TokenToZilSwapInput', hubAddress, 0, params);
     yield put({
-      type: consts.MANAGE_LIQUIDITY_SUCCEEDED,
-      payload: { faucetTxId }
+      type: consts.TOKEN_TO_ZIL_SWAP_SUCCEEDED,
+      payload: { tokenToZilSwapId }
     });
   } catch (error) {
     console.log(error);
-    yield put({ type: consts.MANAGE_LIQUIDITY_FAILED });
+    yield put({ type: consts.TOKEN_TO_ZIL_SWAP_FAILED });
   }
 }
-export function* watchManageLiquiditySaga() {
-  yield takeLatest(consts.MANAGE_LIQUIDITY, manageLiquidity);
+export function* watchTokenToZilSwapSaga() {
+  yield takeLatest(consts.TOKEN_TO_ZIL_SWAP, tokenToZilSwapSaga);
 }
 
 export function* getBalance(action) {
