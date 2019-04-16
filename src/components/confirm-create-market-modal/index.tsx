@@ -122,7 +122,7 @@ const CreateMarketModal: React.FunctionComponent<IProps> = (props) => {
               <span className="text-primary">{'Transaction In Process'}</span>
               <br />
               <br />
-              <small>{'the transaction is pending blockchain confirmation.'}</small>
+              <small>{'The transaction is pending blockchain confirmation.'}</small>
               <br />
               <small>{'Please check after a few minutes.'}</small>
             </p>

@@ -197,7 +197,7 @@ const ZilToTokenSwapForm: React.FunctionComponent<IProps> = (props) => {
                         onChange={changeTokenAddress}
                         valid={tokenAddressValid}
                         invalid={tokenAddressInvalid}
-                        placeholder="Enter the Address to Send"
+                        placeholder="Enter the Token Address"
                         maxLength={42}
                       />
                       <FormFeedback>{'invalid address'}</FormFeedback>
