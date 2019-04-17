@@ -132,19 +132,6 @@ const ApproveAuxZTForm: React.FunctionComponent<IProps> = (props) => {
     }
   };
 
-  const formatAmount = (): void => {
-    if (amount !== initialState.amount) {
-      const amountInZil: string = parseFloat(amount).toFixed(3);
-      const balanceInZil: string = units.fromQa(new BN(balanceInQa), units.Units.Zil);
-      const amountFormattedInZil = formatSendAmountInZil(
-        amountInZil,
-        balanceInZil,
-        minGasPriceInZil
-      );
-      setAmount(amountFormattedInZil);
-    }
-  };
-
   const isBalanceInsufficient = new BN(balanceInQa).lte(new BN(minGasPriceInQa));
   const isSendButtonDisabled =
     tokenAddressInvalid ||
@@ -208,7 +195,6 @@ const ApproveAuxZTForm: React.FunctionComponent<IProps> = (props) => {
                         value={amount}
                         onChange={changeAmount}
                         placeholder="Enter the Amount to Approve"
-                        onBlur={formatAmount}
                         disabled={isUpdatingBalance || isUpdatingMinGasPrice}
                       />
                     </FormGroup>

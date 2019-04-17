@@ -167,7 +167,7 @@ const ApproveAuxTZModal: React.FunctionComponent<IProps> = (props) => {
           <small className="my-1 text-secondary">
             <b>{'Amount to Approve'}</b>
           </small>
-          {amount} ZIL
+          {amount} Tokens
           <hr className="my-2" />
           <small className="my-1 text-secondary">
             <b>{'Gas Price'}</b>

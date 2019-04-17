@@ -168,7 +168,7 @@ export function* approveAuxZTSaga(action) {
   // debounce by 500ms
   yield delay(500);
   try {
-    const approveAuxZTId = yield* authorizeAuxSaga(action, ztAddress);
+    const approveAuxZTId = yield* approveAuxSaga(action, ztAddress);
     yield put({
       type: consts.APPROVE_AUX_ZT_SUCCEEDED,
       payload: { approveAuxZTId }
@@ -186,7 +186,7 @@ export function* approveAuxTZSaga(action) {
   // debounce by 500ms
   yield delay(500);
   try {
-    const approveAuxTZId = yield* authorizeAuxSaga(action, tzAddress);
+    const approveAuxTZId = yield* approveAuxSaga(action, tzAddress);
     yield put({
       type: consts.APPROVE_AUX_TZ_SUCCEEDED,
       payload: { approveAuxTZId }
@@ -204,7 +204,7 @@ export function* approveAuxLMSaga(action) {
   // debounce by 500ms
   yield delay(500);
   try {
-    const approveAuxLMId = yield* authorizeAuxSaga(action, lmAddress);
+    const approveAuxLMId = yield* approveAuxSaga(action, lmAddress);
     yield put({
       type: consts.APPROVE_AUX_LM_SUCCEEDED,
       payload: { approveAuxLMId }
