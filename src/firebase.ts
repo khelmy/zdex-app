@@ -22,12 +22,12 @@ import firebase from 'firebase/app';
   https://stackoverflow.com/questions/37482366/is-it-safe-to-expose-firebase-apikey-to-the-public
 */
 const config = {
-  apiKey: "AIzaSyAiGXEq03CLzAALRFC3V4iUM1u6V1lPAyw",
-  authDomain: "zdex-app.firebaseapp.com",
-  databaseURL: "https://zdex-app.firebaseio.com",
-  projectId: "zdex-app",
-  storageBucket: "zdex-app.appspot.com",
-  messagingSenderId: "465337080316"
+  apiKey: 'AIzaSyAiGXEq03CLzAALRFC3V4iUM1u6V1lPAyw',
+  authDomain: 'zdex-app.firebaseapp.com',
+  databaseURL: 'https://zdex-app.firebaseio.com',
+  projectId: 'zdex-app',
+  storageBucket: 'zdex-app.appspot.com',
+  messagingSenderId: '465337080316'
 };
 
 firebase.initializeApp(config);
