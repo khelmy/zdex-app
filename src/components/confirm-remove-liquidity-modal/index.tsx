@@ -24,12 +24,13 @@ import { Form, FormGroup, Label, Input } from 'reactstrap';
 import Disclaimer from '../disclaimer';
 
 interface IProps {
-  removeLiquidity: (tokenAddress, amount, minZil, minTokens, gasPrice) => void;
+  removeLiquidity: (tokenAddress, amount, minZil, minTokens, recipientAddress, gasPrice) => void;
   isModalOpen: boolean;
   tokenAddress: string;
   amount: string;
   minZil: string;
   minTokens: string;
+  recipientAddress: string;
   gasPrice: string;
   removeLiquidityStatus?: string;
   closeModal: () => void;
@@ -58,6 +59,7 @@ const RemoveLiquidityModal: React.FunctionComponent<IProps> = (props) => {
     amount,
     minZil,
     minTokens,
+    recipientAddress,
     gasPrice,
     isModalOpen,
     removeLiquidityId,
@@ -104,7 +106,7 @@ const RemoveLiquidityModal: React.FunctionComponent<IProps> = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    removeLiquidity(tokenAddress, amount, minZil, minTokens, gasPrice);
+    removeLiquidity(tokenAddress, amount, minZil, minTokens, recipientAddress, gasPrice);
   };
 
   const renderTransactionProcess = () => {
@@ -180,6 +182,11 @@ const RemoveLiquidityModal: React.FunctionComponent<IProps> = (props) => {
             <b>{'Minimum Tokens Received'}</b>
           </small>
           {minTokens} Tokens
+          <hr className="my-2" />
+          <small className="my-1 text-secondary">
+            <b>{'Recipient Address'}</b>
+          </small>
+          <span className="font-monospace">{recipientAddress}</span>
           <hr className="my-2" />
           <small className="my-1 text-secondary">
             <b>{'Gas Price'}</b>

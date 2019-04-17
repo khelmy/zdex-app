@@ -32,6 +32,8 @@ function* rootSaga() {
     zilSagas.watchZilToTokenSwapSaga(),
     zilSagas.watchTokenToZilSwapSaga(),
     zilSagas.watchAuthorizeTokenToZilSaga(),
+    zilSagas.watchAddLiquiditySaga(),
+    zilSagas.watchRemoveLiquiditySaga(),
     zilSagas.watchAuthorizeLiquiditySaga()
   ]);
 }

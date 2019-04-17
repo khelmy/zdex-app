@@ -93,11 +93,11 @@ export const addLiquidity = (tokenAddress, amount, minLiquidity, maxTokens) => (
 });
 
 export const REMOVE_LIQUIDITY = 'REMOVE_LIQUIDITY';
-export const REMOVE_LIQUIDITY_SUCCEEDED = 'REMOVE_LIQUIDITY';
-export const REMOVE_LIQUIDITY_FAILED = 'REMOVE_LIQUIDITY';
-export const removeLiquidity = (tokenAddress, amount, minZil, minTokens) => ({
+export const REMOVE_LIQUIDITY_SUCCEEDED = 'REMOVE_LIQUIDITY_SUCCEEDED';
+export const REMOVE_LIQUIDITY_FAILED = 'REMOVE_LIQUIDITY_FAILED';
+export const removeLiquidity = (tokenAddress, amount, minZil, minTokens, recipientAddress) => ({
   type: REMOVE_LIQUIDITY,
-  payload: { tokenAddress, amount, minZil, minTokens }
+  payload: { tokenAddress, amount, minZil, minTokens, recipientAddress }
 });
 
 export const AUTHORIZE_LIQUIDITY = 'AUTHORIZE_LIQUIDITY';

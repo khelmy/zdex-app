@@ -49,6 +49,9 @@ interface IState {
   amount: string;
   minZil: string;
   minTokens: string;
+  recipientAddress: string;
+  recipientAddressValid: boolean;
+  recipientAddressInvalid: boolean;
   isSendingTx: boolean;
   gasPrice: string;
   gasPriceInQa: string;
@@ -64,6 +67,9 @@ const initialState: IState = {
   amount: '',
   minZil: '',
   minTokens: '',
+  recipientAddress: '',
+  recipientAddressValid: false,
+  recipientAddressInvalid: false,
   isSendingTx: false,
   gasPrice: '0',
   gasPriceInQa: '0',
@@ -89,7 +95,10 @@ const RemoveLiquidityForm: React.FunctionComponent<IProps> = (props) => {
   const [tokenAddressInvalid, setTokenAddressInvalid] = useState(initialState.tokenAddressInvalid);
   const [amount, setAmount] = useState(initialState.amount);
   const [minZil, setMinLiquidity] = useState(initialState.minZil);
-  const [minTokens, setMaxTokens] = useState(initialState.minTokens);
+  const [minTokens, setMinTokens] = useState(initialState.minTokens);
+  const [recipientAddress, setRecipientAddress] = useState(initialState.recipientAddress);
+  const [recipientAddressValid, setRecipientAddressValid] = useState(initialState.recipientAddressValid);
+  const [recipientAddressInvalid, setRecipientAddressInvalid] = useState(initialState.recipientAddressInvalid);
 
   const isUpdatingBalance = getBalanceStatus === requestStatus.PENDING;
   useEffect(
@@ -145,11 +154,21 @@ const RemoveLiquidityForm: React.FunctionComponent<IProps> = (props) => {
     }
   };
 
-  const changeMaxTokens = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const changeMinTokens = (e: React.ChangeEvent<HTMLInputElement>): void => {
     e.preventDefault();
     if (e.target.value === '' || /^\d*\.?\d*$/.test(e.target.value)) {
-      setMaxTokens(e.target.value);
+      setMinTokens(e.target.value);
     }
+  };
+
+  const changeRecipientAddress = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    e.preventDefault();
+    const value = e.target.value;
+    const key = 'recipientAddress';
+    const validationResult: any = getInputValidationState(key, value, /^0x[a-fA-F0-9]{40}$/);
+    setRecipientAddress(value);
+    setRecipientAddressValid(validationResult.recipientAddressValid);
+    setRecipientAddressInvalid(validationResult.recipientAddressInvalid);
   };
 
   const formatAmount = (): void => {
@@ -172,6 +191,8 @@ const RemoveLiquidityForm: React.FunctionComponent<IProps> = (props) => {
     amount === initialState.amount ||
     minZil === initialState.minZil ||
     minTokens === initialState.minTokens ||
+    recipientAddressInvalid ||
+    recipientAddress === initialState.recipientAddress ||
     isBalanceInsufficient;
   const sendButtonText = 'Send';
 
@@ -194,7 +215,7 @@ const RemoveLiquidityForm: React.FunctionComponent<IProps> = (props) => {
                 <Col xs={12} sm={12} md={12} lg={8} className="mr-auto ml-auto">
                   <Form className="mt-4 text-left" onSubmit={(e) => e.preventDefault()}>
                     <FormGroup>
-                      <Label for="Address">
+                      <Label for="tokenAddress">
                         <small>
                           <b>{'Token Address'}</b>
                         </small>
@@ -267,10 +288,32 @@ const RemoveLiquidityForm: React.FunctionComponent<IProps> = (props) => {
                         maxLength={10}
                         data-testid="minTokens"
                         value={minTokens}
-                        onChange={changeMaxTokens}
+                        onChange={changeMinTokens}
                         placeholder="Maximum Tokens Sent"
                         disabled={isUpdatingBalance || isUpdatingMinGasPrice}
                       />
+                    </FormGroup>
+                    <br />
+                    <FormGroup>
+                      <Label for="recipientAddress">
+                        <small>
+                          <b>{'Recipient Address'}</b>
+                        </small>
+                      </Label>
+                      <Input
+                        id="recipientAddress"
+                        type="text"
+                        name="recipientAddress"
+                        data-testid="to-address"
+                        value={recipientAddress}
+                        onChange={changeRecipientAddress}
+                        valid={recipientAddressValid}
+                        invalid={recipientAddressInvalid}
+                        placeholder="Liquidity Recipient Address"
+                        maxLength={42}
+                      />
+                      <FormFeedback>{'invalid address'}</FormFeedback>
+                      <FormFeedback valid={true}>{'valid address'}</FormFeedback>
                     </FormGroup>
                     <small className="text-secondary">
                       Gas Price: {isUpdatingMinGasPrice ? 'loading...' : `${minGasPriceInZil} ZIL`}
@@ -309,6 +352,7 @@ const RemoveLiquidityForm: React.FunctionComponent<IProps> = (props) => {
           amount={amount}
           minZil={minZil}
           minTokens={minTokens}
+          recipientAddress={recipientAddress}
           gasPrice={minGasPriceInZil}
           isModalOpen={isModalOpen}
           removeLiquidity={props.removeLiquidity}
@@ -333,8 +377,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  removeLiquidity: (tokenAddress, amount, minZil, minTokens) =>
-    dispatch(zilActions.removeLiquidity(tokenAddress, amount, minZil, minTokens)),
+  removeLiquidity: (tokenAddress, amount, minZil, minTokens, recipientAddress) =>
+    dispatch(zilActions.removeLiquidity(tokenAddress, amount, minZil, minTokens, recipientAddress)),
   clear: () => dispatch(zilActions.clear()),
   getBalance: () => dispatch(zilActions.getBalance()),
   getMinGasPrice: () => dispatch(zilActions.getMinGasPrice())

@@ -334,6 +334,101 @@ export function* watchAuthorizeTokenToZilSaga() {
   yield takeLatest(consts.AUTHORIZE_TOKEN_TO_ZIL, authorizeTokenToZilSaga);
 }
 
+export function* addLiquiditySaga(action) {
+  // debounce by 500ms
+  yield delay(500);
+  try {
+    const { payload } = action;
+    const { tokenAddress, amount, minLiquidity, maxTokens } = payload;
+    const params = [
+      {
+        vname: "token",
+        type: "ByStr20",
+        value: tokenAddress
+      },
+      {
+        vname: "min_liquidity",
+        type: "Uint128",
+        value: minLiquidity
+      },
+      {
+        vname: "max_tokens",
+        type: "Uint128",
+        value: maxTokens
+      },
+      {
+        vname: 'deadline',
+        type: 'BNum',
+        value: `${5e20}`
+      }
+    ];
+    const addLiquidityId = yield* callTransition('AddLiquidity', hubAddress, amount, params);
+    yield put({
+      type: consts.ADD_LIQUIDITY_SUCCEEDED,
+      payload: { addLiquidityId }
+    });
+  } catch (error) {
+    console.log(error);
+    yield put({ type: consts.ADD_LIQUIDITY_FAILED });
+  }
+}
+export function* watchAddLiquiditySaga() {
+  yield takeLatest(consts.ADD_LIQUIDITY, addLiquiditySaga);
+}
+
+export function* removeLiquiditySaga(action) {
+  // debounce by 500ms
+  yield delay(500);
+  try {
+    const { payload } = action;
+    const { tokenAddress, amount, minZil, minTokens, recipientAddress } = payload;
+    const params = [
+      {
+        vname: "token",
+        type: "ByStr20",
+        value: tokenAddress
+      },
+      {
+        vname: "amount",
+        type: "Uint128",
+        value: amount
+      },
+      {
+        vname: "min_zil",
+        type: "Uint128",
+        value: minZil
+      },
+      {
+        vname: "min_tokens",
+        type: "Uint128",
+        value: minTokens
+      },
+      {
+        vname: 'deadline',
+        type: 'BNum',
+        value: `${5e20}`
+      },
+      {
+        vname: "recipient",
+        type: "ByStr20",
+        value: recipientAddress
+      }
+    ];
+    console.log(params);
+    const removeLiquidityId = yield* callTransition('RemoveLiquidity', hubAddress, 0, params);
+    yield put({
+      type: consts.REMOVE_LIQUIDITY_SUCCEEDED,
+      payload: { removeLiquidityId }
+    });
+  } catch (error) {
+    console.log(error);
+    yield put({ type: consts.REMOVE_LIQUIDITY_FAILED });
+  }
+}
+export function* watchRemoveLiquiditySaga() {
+  yield takeLatest(consts.REMOVE_LIQUIDITY, removeLiquiditySaga);
+}
+
 export function* authorizeLiquiditySaga(action) {
   // debounce by 500ms
   yield delay(500);
