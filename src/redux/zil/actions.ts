@@ -60,11 +60,11 @@ export const tokenToZilSwap = (tokenAddress, tokensSold, minZil) => ({
   payload: { tokenAddress, tokensSold, minZil }
 });
 
-export const AUTHORIZE_ZDEX = 'AUTHORIZE_ZDEX';
-export const AUTHORIZE_ZDEX_SUCCEEDED = 'AUTHORIZE_ZDEX_SUCCEEDED';
-export const AUTHORIZE_ZDEX_FAILED = 'AUTHORIZE_ZDEX_FAILED';
-export const authorizeZDEX = (tokenAddress, amount) => ({
-  type: AUTHORIZE_ZDEX,
+export const AUTHORIZE_TOKEN_TO_ZIL = 'AUTHORIZE_TOKEN_TO_ZIL';
+export const AUTHORIZE_TOKEN_TO_ZIL_SUCCEEDED = 'AUTHORIZE_TOKEN_TO_ZIL_SUCCEEDED';
+export const AUTHORIZE_TOKEN_TO_ZIL_FAILED = 'AUTHORIZE_TOKEN_TO_ZIL_FAILED';
+export const authorizeTokenToZil = (tokenAddress, amount) => ({
+  type: AUTHORIZE_TOKEN_TO_ZIL,
   payload: { tokenAddress, amount }
 });
 
@@ -82,6 +82,14 @@ export const REMOVE_LIQUIDITY_FAILED = 'REMOVE_LIQUIDITY';
 export const removeLiquidity = (tokenAddress, amount, minZil, minTokens) => ({
   type: REMOVE_LIQUIDITY,
   payload: { tokenAddress, amount, minZil, minTokens }
+});
+
+export const AUTHORIZE_LIQUIDITY = 'AUTHORIZE_LIQUIDITY';
+export const AUTHORIZE_LIQUIDITY_SUCCEEDED = 'AUTHORIZE_LIQUIDITY_SUCCEEDED';
+export const AUTHORIZE_LIQUIDITY_FAILED = 'AUTHORIZE_LIQUIDITY_FAILED';
+export const authorizeLiquidity = (tokenAddress, amount) => ({
+  type: AUTHORIZE_LIQUIDITY,
+  payload: { tokenAddress, amount }
 });
 
 export const GET_BALANCE = 'GET_BALANCE';

@@ -104,25 +104,6 @@ function* callTransition(transition, toAddr, amount, params) {
 
   // Send a transaction to the network
   const data = yield provider.send(RPCMethod.CreateTransaction, txParams);
-
-  /*
-    const msg = ({
-      version: VERSION,
-      toAddr: toAddr,
-      amount: units.toQa(amount, units.Units.Zil),
-      gasPrice: new BN(minGasPriceInQa),
-      gasLimit: Long.fromNumber(10000),
-      pubKey: publicKey,
-      nonce: nonce,
-      data: JSON.stringify(txData)
-    });
-    let tx = zilliqa.transactions.new(msg, true);
-    // const signedTx = yield wallet.sign(tx);
-    const data = yield zilliqa.blockchain.createTransaction(tx, 33, 1000);
-    */
-
-  // const ctr = zilliqa.contracts.at(toAddr);
-  // const data = yield ctr.call(transition, txData, args, 33, 1000, true);
   if (data.error !== undefined) {
     throw Error(data.error.message);
   }
@@ -130,6 +111,33 @@ function* callTransition(transition, toAddr, amount, params) {
   const id = data.result.TranID;
   console.log(data.result);
   return id;
+}
+
+export function* createMarketSaga(action) {
+  // debounce by 500ms
+  yield delay(500);
+  try {
+    const { payload } = action;
+    const { tokenAddress } = payload;
+    const params = [
+      {
+        vname: 'token',
+        type: 'ByStr20',
+        value: tokenAddress
+      }
+    ];
+    const createMarketId = yield* callTransition('CreateMarket', hubAddress, 0, params);
+    yield put({
+      type: consts.CREATE_MARKET_SUCCEEDED,
+      payload: { createMarketId }
+    });
+  } catch (error) {
+    console.log(error);
+    yield put({ type: consts.CREATE_MARKET_FAILED });
+  }
+}
+export function* watchCreateMarketSaga() {
+  yield takeLatest(consts.CREATE_MARKET, createMarketSaga);
 }
 
 export function* zilToTokenSwapSaga(action) {
@@ -210,6 +218,62 @@ export function* tokenToZilSwapSaga(action) {
 export function* watchTokenToZilSwapSaga() {
   yield takeLatest(consts.TOKEN_TO_ZIL_SWAP, tokenToZilSwapSaga);
 }
+
+export function* authorizeAuxSaga(action, aux) {
+  const { payload } = action;
+  const { tokenAddress, amount } = payload;
+  const params = [
+    {
+      vname: 'spender',
+      type: 'ByStr20',
+      value: `0x${aux}`
+    },
+    {
+      vname: 'tokens',
+      type: 'Uint128',
+      value: `${amount}`
+    }
+  ];
+  const authorizeAuxId = yield* callTransition('Approve', tokenAddress, 0, params);
+  return authorizeAuxId;
+}
+
+export function* authorizeTokenToZilSaga(action) {
+  // debounce by 500ms
+  yield delay(500);
+  try {
+    const authorizeTokenToZilId = yield* authorizeAuxSaga(action, tzAddress);
+    yield put({
+      type: consts.AUTHORIZE_TOKEN_TO_ZIL_SUCCEEDED,
+      payload: { authorizeTokenToZilId }
+    });
+  } catch (error) {
+    console.log(error);
+    yield put({ type: consts.AUTHORIZE_TOKEN_TO_ZIL_FAILED });
+  }
+}
+export function* watchAuthorizeTokenToZilSaga() {
+  yield takeLatest(consts.AUTHORIZE_TOKEN_TO_ZIL, authorizeTokenToZilSaga);
+}
+
+export function* authorizeLiquiditySaga(action) {
+  // debounce by 500ms
+  yield delay(500);
+  try {
+    const authorizeLiquidityId = yield* authorizeAuxSaga(action, lmAddress);
+    yield put({
+      type: consts.AUTHORIZE_LIQUIDITY_SUCCEEDED,
+      payload: { authorizeLiquidityId }
+    });
+  } catch (error) {
+    console.log(error);
+    yield put({ type: consts.AUTHORIZE_LIQUIDITY_FAILED });
+  }
+}
+export function* watchAuthorizeLiquiditySaga() {
+  yield takeLatest(consts.AUTHORIZE_LIQUIDITY, authorizeLiquiditySaga);
+}
+
 
 export function* getBalance(action) {
   // debounce by 500ms

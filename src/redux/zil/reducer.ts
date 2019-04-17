@@ -140,23 +140,23 @@ export default function zil(state = initialState, action) {
         tokenToZilSwapStatus: requestStatus.FAILED,
         tokenToZilSwapId: undefined
       };
-    case consts.AUTHORIZE_ZDEX:
+    case consts.AUTHORIZE_TOKEN_TO_ZIL:
       return {
         ...state,
-        authorizeZDEXStatus: requestStatus.PENDING,
-        authorizeZDEXId: undefined
+        authorizeTokenToZilStatus: requestStatus.PENDING,
+        authorizeTokenToZilId: undefined
       };
-    case consts.AUTHORIZE_ZDEX_SUCCEEDED:
+    case consts.AUTHORIZE_TOKEN_TO_ZIL_SUCCEEDED:
       return {
         ...state,
-        authorizeZDEXStatus: requestStatus.SUCCEED,
-        authorizeZDEXId: action.payload.authorizeZDEXId
+        authorizeTokenToZilStatus: requestStatus.SUCCEED,
+        authorizeTokenToZilId: action.payload.authorizeTokenToZilId
       };
-    case consts.AUTHORIZE_ZDEX_FAILED:
+    case consts.AUTHORIZE_TOKEN_TO_ZIL_FAILED:
       return {
         ...state,
-        authorizeZDEXStatus: requestStatus.FAILED,
-        authorizeZDEXId: undefined
+        authorizeTokenToZilStatus: requestStatus.FAILED,
+        authorizeTokenToZilId: undefined
       };
     case consts.ADD_LIQUIDITY:
       return {
@@ -193,6 +193,24 @@ export default function zil(state = initialState, action) {
         ...state,
         removeLiquidityStatus: requestStatus.FAILED,
         removeLiquidityId: undefined
+      };
+    case consts.AUTHORIZE_LIQUIDITY:
+      return {
+        ...state,
+        authorizeLiquidityStatus: requestStatus.PENDING,
+        authorizeLiquidityId: undefined
+      };
+    case consts.AUTHORIZE_LIQUIDITY_SUCCEEDED:
+      return {
+        ...state,
+        authorizeLiquidityStatus: requestStatus.SUCCEED,
+        authorizeLiquidityId: action.payload.authorizeLiquidityId
+      };
+    case consts.AUTHORIZE_LIQUIDITY_FAILED:
+      return {
+        ...state,
+        authorizeLiquidityStatus: requestStatus.FAILED,
+        authorizeLiquidityId: undefined
       };
     case consts.GET_BALANCE:
       return {

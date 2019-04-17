@@ -22,12 +22,12 @@ import Button from '../button';
 import * as zilActions from '../../redux/zil/actions';
 import { connect } from 'react-redux';
 import { getInputValidationState, formatSendAmountInZil } from '../../utils';
-import ConfirmAuthorizeZDEXModal from '../confirm-authorize-zdex-modal';
+import ConfirmAuthorizeTokenToZilModal from '../confirm-authorize-token-to-zil-modal';
 import { AccountInfo } from '../account-info';
 import { requestStatus } from '../../constants';
 
 interface IProps {
-  authorizeZDEX: (tokenAddress, amount, gasPrice) => void;
+  authorizeTokenToZil: (tokenAddress, amount, gasPrice) => void;
   clear: () => void;
   getMinGasPrice: () => void;
   minGasPriceInQa: string;
@@ -35,11 +35,11 @@ interface IProps {
   getBalance: () => void;
   balanceInQa: string;
   getBalanceStatus?: string;
-  authorizeZDEXStatus?: string;
+  authorizeTokenToZilStatus?: string;
   publicKey: string;
   address: string;
   network: string;
-  authorizeZDEXId?: string;
+  authorizeTokenToZilId?: string;
 }
 
 interface IState {
@@ -66,11 +66,11 @@ const initialState: IState = {
   isUpdatingGasPrice: false
 };
 
-const AuthorizeZDEXForm: React.FunctionComponent<IProps> = (props) => {
+const AuthorizeTokenToZilForm: React.FunctionComponent<IProps> = (props) => {
   const {
     address,
-    authorizeZDEXStatus,
-    authorizeZDEXId,
+    authorizeTokenToZilStatus,
+    authorizeTokenToZilId,
     getBalance,
     balanceInQa,
     getBalanceStatus,
@@ -132,19 +132,6 @@ const AuthorizeZDEXForm: React.FunctionComponent<IProps> = (props) => {
     }
   };
 
-  const formatAmount = (): void => {
-    if (amount !== initialState.amount) {
-      const amountInZil: string = parseFloat(amount).toFixed(3);
-      const balanceInZil: string = units.fromQa(new BN(balanceInQa), units.Units.Zil);
-      const amountFormattedInZil = formatSendAmountInZil(
-        amountInZil,
-        balanceInZil,
-        minGasPriceInZil
-      );
-      setAmount(amountFormattedInZil);
-    }
-  };
-
   const isBalanceInsufficient = new BN(balanceInQa).lte(new BN(minGasPriceInQa));
   const isSendButtonDisabled =
     tokenAddressInvalid ||
@@ -166,7 +153,7 @@ const AuthorizeZDEXForm: React.FunctionComponent<IProps> = (props) => {
           <div className="py-5">
             <div className="px-4 text-center">
               <h2 className="pb-2">
-                <b>{'Authorize ZDEX to Trade for You'}</b>
+                <b>{'Authorize Token to Zil Swaps'}</b>
               </h2>
               <Row>
                 <Col xs={12} sm={12} md={12} lg={8} className="mr-auto ml-auto">
@@ -208,7 +195,6 @@ const AuthorizeZDEXForm: React.FunctionComponent<IProps> = (props) => {
                         value={amount}
                         onChange={changeAmount}
                         placeholder="Enter the Amount to Approve"
-                        onBlur={formatAmount}
                         disabled={isUpdatingBalance || isUpdatingMinGasPrice}
                       />
                     </FormGroup>
@@ -242,14 +228,14 @@ const AuthorizeZDEXForm: React.FunctionComponent<IProps> = (props) => {
         </Card>
       </div>
       {isModalOpen ? (
-        <ConfirmAuthorizeZDEXModal
-          authorizeZDEXId={authorizeZDEXId}
-          authorizeZDEXStatus={authorizeZDEXStatus}
+        <ConfirmAuthorizeTokenToZilModal
+          authorizeTokenToZilId={authorizeTokenToZilId}
+          authorizeTokenToZilStatus={authorizeTokenToZilStatus}
           tokenAddress={tokenAddress}
           amount={amount}
           gasPrice={minGasPriceInZil}
           isModalOpen={isModalOpen}
-          authorizeZDEX={props.authorizeZDEX}
+          authorizeTokenToZil={props.authorizeTokenToZil}
           closeModal={closeModal}
         />
       ) : null}
@@ -262,8 +248,8 @@ const mapStateToProps = (state) => ({
   getBalanceStatus: state.zil.getBalanceStatus,
   minGasPriceInQa: state.zil.minGasPriceInQa,
   getMinGasPriceStatus: state.zil.getMinGasPriceStatus,
-  authorizeZDEXStatus: state.zil.authorizeZDEXStatus,
-  authorizeZDEXId: state.zil.authorizeZDEXId,
+  authorizeTokenToZilStatus: state.zil.authorizeTokenToZilStatus,
+  authorizeTokenToZilId: state.zil.authorizeTokenToZilId,
   network: state.zil.network,
   address: state.zil.address,
   publicKey: state.zil.publicKey,
@@ -271,7 +257,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  authorizeZDEX: (tokenAddress, amount) => dispatch(zilActions.authorizeZDEX(tokenAddress, amount)),
+  authorizeTokenToZil: (tokenAddress, amount) => dispatch(zilActions.authorizeTokenToZil(tokenAddress, amount)),
   clear: () => dispatch(zilActions.clear()),
   getBalance: () => dispatch(zilActions.getBalance()),
   getMinGasPrice: () => dispatch(zilActions.getMinGasPrice())
@@ -280,4 +266,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AuthorizeZDEXForm);
+)(AuthorizeTokenToZilForm);

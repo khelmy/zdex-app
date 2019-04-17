@@ -24,14 +24,14 @@ import { Form, FormGroup, Label, Input } from 'reactstrap';
 import Disclaimer from '../disclaimer';
 
 interface IProps {
-  authorizeZDEX: (tokenAddress, amount, gasPrice) => void;
+  authorizeLiquidity: (tokenAddress, amount, gasPrice) => void;
   isModalOpen: boolean;
   tokenAddress: string;
   amount: string;
   gasPrice: string;
-  authorizeZDEXStatus?: string;
+  authorizeLiquidityStatus?: string;
   closeModal: () => void;
-  authorizeZDEXId?: string;
+  authorizeLiquidityId?: string;
 }
 
 interface IState {
@@ -50,16 +50,16 @@ const initialState: IState = {
   prevApproveTokenStatus: undefined
 };
 
-const AuthorizeZDEXModal: React.FunctionComponent<IProps> = (props) => {
+const AuthorizeLiquidityModal: React.FunctionComponent<IProps> = (props) => {
   const {
     tokenAddress,
     amount,
     gasPrice,
     isModalOpen,
-    authorizeZDEXId,
+    authorizeLiquidityId,
     closeModal,
-    authorizeZDEX,
-    authorizeZDEXStatus
+    authorizeLiquidity,
+    authorizeLiquidityStatus
   } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(initialState.isSubmitting);
@@ -74,7 +74,7 @@ const AuthorizeZDEXModal: React.FunctionComponent<IProps> = (props) => {
     () => {
       if (
         prevApproveTokenStatus === requestStatus.PENDING &&
-        authorizeZDEXStatus === requestStatus.FAILED
+        authorizeLiquidityStatus === requestStatus.FAILED
       ) {
         setIsSubmitting(false);
         setIsComplete(false);
@@ -83,16 +83,16 @@ const AuthorizeZDEXModal: React.FunctionComponent<IProps> = (props) => {
       }
       if (
         prevApproveTokenStatus === requestStatus.PENDING &&
-        authorizeZDEXStatus === requestStatus.SUCCEED
+        authorizeLiquidityStatus === requestStatus.SUCCEED
       ) {
         setIsSubmitting(false);
         setIsComplete(true);
         setIsFailed(false);
         setIsDisclaimerChecked(false);
       }
-      setPrevApproveTokenStatus(authorizeZDEXStatus);
+      setPrevApproveTokenStatus(authorizeLiquidityStatus);
     },
-    [authorizeZDEXStatus, prevApproveTokenStatus]
+    [authorizeLiquidityStatus, prevApproveTokenStatus]
   );
 
   const handleCheck = () => {
@@ -102,7 +102,7 @@ const AuthorizeZDEXModal: React.FunctionComponent<IProps> = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    authorizeZDEX(tokenAddress, amount, gasPrice);
+    authorizeLiquidity(tokenAddress, amount, gasPrice);
   };
 
   const renderTransactionProcess = () => {
@@ -128,11 +128,11 @@ const AuthorizeZDEXModal: React.FunctionComponent<IProps> = (props) => {
               <br />
               <small>{'Please check after a few minutes.'}</small>
             </p>
-            {authorizeZDEXId ? (
+            {authorizeLiquidityId ? (
               <u>
                 <a
                   target="_blank"
-                  href={`${EXPLORER_URL}/transactions/${authorizeZDEXId}`}
+                  href={`${EXPLORER_URL}/transactions/${authorizeLiquidityId}`}
                   rel="noreferrer"
                 >
                   {'View Your Transaction'}
@@ -167,7 +167,7 @@ const AuthorizeZDEXModal: React.FunctionComponent<IProps> = (props) => {
           <small className="my-1 text-secondary">
             <b>{'Amount to Approve'}</b>
           </small>
-          {amount} ZIL
+          {amount} Tokens
           <hr className="my-2" />
           <small className="my-1 text-secondary">
             <b>{'Gas Price'}</b>
@@ -221,4 +221,4 @@ const AuthorizeZDEXModal: React.FunctionComponent<IProps> = (props) => {
   );
 };
 
-export default AuthorizeZDEXModal;
+export default AuthorizeLiquidityModal;

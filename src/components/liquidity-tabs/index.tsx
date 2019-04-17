@@ -23,9 +23,11 @@ import './style.css';
 
 import AddLiquidity from '../add-liquidity';
 import RemoveLiquidity from '../remove-liquidity';
+import AuthorizeLiquidity from '../authorize-liquidity';
 
 const ADD_LIQUIDITY_TAB = '0';
 const REMOVE_LIQUIDITY_TAB = '1';
+const AUTHORIZE_LIQUIDITY_TAB = '2';
 
 const AccessTabs: React.FunctionComponent = () => {
   const [activeTab, setActiveTab] = useState(ADD_LIQUIDITY_TAB);
@@ -70,6 +72,18 @@ const AccessTabs: React.FunctionComponent = () => {
                       {'Remove Liquidity'}
                     </NavLink>
                   </NavItem>
+                  <NavItem>
+                    <NavLink
+                      className={`cursor-pointer ${classnames({
+                        active: activeTab === AUTHORIZE_LIQUIDITY_TAB
+                      })}`}
+                      onClick={() => {
+                        toggle(AUTHORIZE_LIQUIDITY_TAB);
+                      }}
+                    >
+                      {'Authorize Liquidity'}
+                    </NavLink>
+                  </NavItem>
                 </Nav>
                 <TabContent activeTab={activeTab}>
                   <TabPane tabId={ADD_LIQUIDITY_TAB}>
@@ -77,6 +91,9 @@ const AccessTabs: React.FunctionComponent = () => {
                   </TabPane>
                   <TabPane tabId={REMOVE_LIQUIDITY_TAB}>
                     <RemoveLiquidity />
+                  </TabPane>
+                  <TabPane tabId={AUTHORIZE_LIQUIDITY_TAB}>
+                    <AuthorizeLiquidity />
                   </TabPane>
                 </TabContent>
               </div>
