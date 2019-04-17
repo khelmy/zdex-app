@@ -1,6 +1,6 @@
 # ZDEX Web App
 
-[ZDEX](https://github.com/khelmy/zdex) is a decentralized exchange for fungible tokens on Zilliqa, inspired by [UniSwap](https://uniswap.io/). This repository contains the web interface for the ZDEX contracts.
+[ZDEX](https://github.com/khelmy/zdex) is a decentralized exchange for fungible tokens on Zilliqa, inspired by [UniSwap](https://uniswap.io/). This repository contains the web interface for the ZDEX contracts. Now available at https://zdex.cc.
 
 This repository is gratefully forked from [nucleus-wallet](https://dev-wallet.zilliqa.com).
 
