@@ -86,23 +86,59 @@ export default function zil(state = initialState, action) {
         createMarketStatus: requestStatus.FAILED,
         createMarketId: undefined
       };
-    case consts.APPROVE_TOKEN:
+    case consts.APPROVE_AUX_ZT:
       return {
         ...state,
-        approveTokenStatus: requestStatus.PENDING,
-        approveTokenId: undefined
+        approveAuxZTStatus: requestStatus.PENDING,
+        approveAuxZTId: undefined
       };
-    case consts.APPROVE_TOKEN_SUCCEEDED:
+    case consts.APPROVE_AUX_ZT_SUCCEEDED:
       return {
         ...state,
-        approveTokenStatus: requestStatus.SUCCEED,
-        approveTokenId: action.payload.approveTokenId
+        approveAuxZTStatus: requestStatus.SUCCEED,
+        approveAuxZTId: action.payload.approveAuxZTId
       };
-    case consts.APPROVE_TOKEN_FAILED:
+    case consts.APPROVE_AUX_ZT_FAILED:
       return {
         ...state,
-        approveTokenStatus: requestStatus.FAILED,
-        approveTokenId: undefined
+        approveAuxZTStatus: requestStatus.FAILED,
+        approveAuxZTId: undefined
+      };
+    case consts.APPROVE_AUX_TZ:
+      return {
+        ...state,
+        approveAuxTZStatus: requestStatus.PENDING,
+        approveAuxTZId: undefined
+      };
+    case consts.APPROVE_AUX_TZ_SUCCEEDED:
+      return {
+        ...state,
+        approveAuxTZStatus: requestStatus.SUCCEED,
+        approveAuxTZId: action.payload.approveAuxTZId
+      };
+    case consts.APPROVE_AUX_TZ_FAILED:
+      return {
+        ...state,
+        approveAuxTZStatus: requestStatus.FAILED,
+        approveAuxTZId: undefined
+      };
+    case consts.APPROVE_AUX_LM:
+      return {
+        ...state,
+        approveAuxLMStatus: requestStatus.PENDING,
+        approveAuxLMId: undefined
+      };
+    case consts.APPROVE_AUX_LM_SUCCEEDED:
+      return {
+        ...state,
+        approveAuxLMStatus: requestStatus.SUCCEED,
+        approveAuxLMId: action.payload.approveAuxLMId
+      };
+    case consts.APPROVE_AUX_LM_FAILED:
+      return {
+        ...state,
+        approveAuxLMStatus: requestStatus.FAILED,
+        approveAuxLMId: undefined
       };
     case consts.ZIL_TO_TOKEN_SWAP:
       return {

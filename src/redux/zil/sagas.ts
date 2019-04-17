@@ -140,6 +140,84 @@ export function* watchCreateMarketSaga() {
   yield takeLatest(consts.CREATE_MARKET, createMarketSaga);
 }
 
+export function* approveAuxSaga(action, aux) {
+  const { payload } = action;
+  const { tokenAddress, amount } = payload;
+  const params = [
+    {
+      vname: 'token',
+      type: 'ByStr20',
+      value: tokenAddress
+    },
+    {
+      vname: 'aux',
+      type: 'ByStr20',
+      value: `0x${aux}`
+    },
+    {
+      vname: 'limit',
+      type: 'Uint128',
+      value: `${amount}`
+    }
+  ];
+  const approveAuxId = yield* callTransition('ApproveAux', hubAddress, 0, params);
+  return approveAuxId;
+}
+
+export function* approveAuxZTSaga(action) {
+  // debounce by 500ms
+  yield delay(500);
+  try {
+    const approveAuxZTId = yield* authorizeAuxSaga(action, ztAddress);
+    yield put({
+      type: consts.APPROVE_AUX_ZT_SUCCEEDED,
+      payload: { approveAuxZTId }
+    });
+  } catch (error) {
+    console.log(error);
+    yield put({ type: consts.APPROVE_AUX_ZT_FAILED });
+  }
+}
+export function* watchApproveAuxZTSaga() {
+  yield takeLatest(consts.APPROVE_AUX_ZT, approveAuxZTSaga);
+}
+
+export function* approveAuxTZSaga(action) {
+  // debounce by 500ms
+  yield delay(500);
+  try {
+    const approveAuxTZId = yield* authorizeAuxSaga(action, tzAddress);
+    yield put({
+      type: consts.APPROVE_AUX_TZ_SUCCEEDED,
+      payload: { approveAuxTZId }
+    });
+  } catch (error) {
+    console.log(error);
+    yield put({ type: consts.APPROVE_AUX_TZ_FAILED });
+  }
+}
+export function* watchApproveAuxTZSaga() {
+  yield takeLatest(consts.APPROVE_AUX_TZ, approveAuxTZSaga);
+}
+
+export function* approveAuxLMSaga(action) {
+  // debounce by 500ms
+  yield delay(500);
+  try {
+    const approveAuxLMId = yield* authorizeAuxSaga(action, lmAddress);
+    yield put({
+      type: consts.APPROVE_AUX_LM_SUCCEEDED,
+      payload: { approveAuxLMId }
+    });
+  } catch (error) {
+    console.log(error);
+    yield put({ type: consts.APPROVE_AUX_LM_FAILED });
+  }
+}
+export function* watchApproveAuxLMSaga() {
+  yield takeLatest(consts.APPROVE_AUX_LM, approveAuxLMSaga);
+}
+
 export function* zilToTokenSwapSaga(action) {
   // debounce by 500ms
   yield delay(500);

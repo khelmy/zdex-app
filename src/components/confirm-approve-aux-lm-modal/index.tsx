@@ -24,14 +24,14 @@ import { Form, FormGroup, Label, Input } from 'reactstrap';
 import Disclaimer from '../disclaimer';
 
 interface IProps {
-  approveToken: (tokenAddress, amount, gasPrice) => void;
+  approveAuxLM: (tokenAddress, amount, gasPrice) => void;
   isModalOpen: boolean;
   tokenAddress: string;
   amount: string;
   gasPrice: string;
-  approveTokenStatus?: string;
+  approveAuxLMStatus?: string;
   closeModal: () => void;
-  approveTokenId?: string;
+  approveAuxLMId?: string;
 }
 
 interface IState {
@@ -39,7 +39,7 @@ interface IState {
   isComplete: boolean;
   isFailed: boolean;
   isDisclaimerChecked: boolean;
-  prevApproveTokenStatus?: string;
+  prevApproveAuxLMStatus?: string;
 }
 
 const initialState: IState = {
@@ -47,34 +47,34 @@ const initialState: IState = {
   isComplete: false,
   isFailed: false,
   isDisclaimerChecked: false,
-  prevApproveTokenStatus: undefined
+  prevApproveAuxLMStatus: undefined
 };
 
-const ApproveTokenModal: React.FunctionComponent<IProps> = (props) => {
+const ApproveAuxLMModal: React.FunctionComponent<IProps> = (props) => {
   const {
     tokenAddress,
     amount,
     gasPrice,
     isModalOpen,
-    approveTokenId,
+    approveAuxLMId,
     closeModal,
-    approveToken,
-    approveTokenStatus
+    approveAuxLM,
+    approveAuxLMStatus
   } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(initialState.isSubmitting);
   const [isComplete, setIsComplete] = useState(initialState.isComplete);
   const [isFailed, setIsFailed] = useState(initialState.isFailed);
   const [isDisclaimerChecked, setIsDisclaimerChecked] = useState(initialState.isDisclaimerChecked);
-  const [prevApproveTokenStatus, setPrevApproveTokenStatus] = useState(
-    initialState.prevApproveTokenStatus
+  const [prevApproveAuxLMStatus, setPrevApproveAuxLMStatus] = useState(
+    initialState.prevApproveAuxLMStatus
   );
 
   useEffect(
     () => {
       if (
-        prevApproveTokenStatus === requestStatus.PENDING &&
-        approveTokenStatus === requestStatus.FAILED
+        prevApproveAuxLMStatus === requestStatus.PENDING &&
+        approveAuxLMStatus === requestStatus.FAILED
       ) {
         setIsSubmitting(false);
         setIsComplete(false);
@@ -82,17 +82,17 @@ const ApproveTokenModal: React.FunctionComponent<IProps> = (props) => {
         setIsDisclaimerChecked(false);
       }
       if (
-        prevApproveTokenStatus === requestStatus.PENDING &&
-        approveTokenStatus === requestStatus.SUCCEED
+        prevApproveAuxLMStatus === requestStatus.PENDING &&
+        approveAuxLMStatus === requestStatus.SUCCEED
       ) {
         setIsSubmitting(false);
         setIsComplete(true);
         setIsFailed(false);
         setIsDisclaimerChecked(false);
       }
-      setPrevApproveTokenStatus(approveTokenStatus);
+      setPrevApproveAuxLMStatus(approveAuxLMStatus);
     },
-    [approveTokenStatus, prevApproveTokenStatus]
+    [approveAuxLMStatus, prevApproveAuxLMStatus]
   );
 
   const handleCheck = () => {
@@ -102,7 +102,7 @@ const ApproveTokenModal: React.FunctionComponent<IProps> = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    approveToken(tokenAddress, amount, gasPrice);
+    approveAuxLM(tokenAddress, amount, gasPrice);
   };
 
   const renderTransactionProcess = () => {
@@ -128,11 +128,11 @@ const ApproveTokenModal: React.FunctionComponent<IProps> = (props) => {
               <br />
               <small>{'Please check after a few minutes.'}</small>
             </p>
-            {approveTokenId ? (
+            {approveAuxLMId ? (
               <u>
                 <a
                   target="_blank"
-                  href={`${EXPLORER_URL}/transactions/${approveTokenId}`}
+                  href={`${EXPLORER_URL}/transactions/${approveAuxLMId}`}
                   rel="noreferrer"
                 >
                   {'View Your Transaction'}
@@ -160,7 +160,7 @@ const ApproveTokenModal: React.FunctionComponent<IProps> = (props) => {
         </small>
         <div className="card p-3 mt-3">
           <small className="my-1 text-secondary">
-            <b>{'To Address'}</b>
+            <b>{'Token Address'}</b>
           </small>
           <span className="font-monospace">{tokenAddress}</span>
           <hr className="my-2" />
@@ -221,4 +221,4 @@ const ApproveTokenModal: React.FunctionComponent<IProps> = (props) => {
   );
 };
 
-export default ApproveTokenModal;
+export default ApproveAuxLMModal;

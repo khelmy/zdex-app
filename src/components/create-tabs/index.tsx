@@ -22,10 +22,14 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Form, Row, Col } from
 import './style.css';
 
 import CreateMarket from '../create-market';
-import ApproveToken from '../approve-token';
+import ApproveAuxZT from '../approve-aux-zt';
+import ApproveAuxTZ from '../approve-aux-tz';
+import ApproveAuxLM from '../approve-aux-lm';
 
 const CREATE_MARKET_TAB = '0';
-const APPROVE_TOKEN_TAB = '1';
+const APPROVE_AUX_ZT_TAB = '1';
+const APPROVE_AUX_TZ_TAB = '2';
+const APPROVE_AUX_LM_TAB = '3';
 
 const AccessTabs: React.FunctionComponent = () => {
   const [activeTab, setActiveTab] = useState(CREATE_MARKET_TAB);
@@ -43,7 +47,7 @@ const AccessTabs: React.FunctionComponent = () => {
             <Col xs={10} sm={10} md={8} lg={7} className="mr-auto ml-auto">
               <div className="text-center">
                 <h2 className="pt-5 pb-4">
-                  <b>{'Perform a Swap'}</b>
+                  <b>{'Manage Markets'}</b>
                 </h2>
               </div>
               <div>
@@ -61,13 +65,37 @@ const AccessTabs: React.FunctionComponent = () => {
                   <NavItem>
                     <NavLink
                       className={`cursor-pointer ${classnames({
-                        active: activeTab === APPROVE_TOKEN_TAB
+                        active: activeTab === APPROVE_AUX_ZT_TAB
                       })}`}
                       onClick={() => {
-                        toggle(APPROVE_TOKEN_TAB);
+                        toggle(APPROVE_AUX_ZT_TAB);
                       }}
                     >
-                      {'Approve Token'}
+                      {'Approve Zil to Token'}
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink
+                      className={`cursor-pointer ${classnames({
+                        active: activeTab === APPROVE_AUX_TZ_TAB
+                      })}`}
+                      onClick={() => {
+                        toggle(APPROVE_AUX_TZ_TAB);
+                      }}
+                    >
+                      {'Approve Token to Zil'}
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink
+                      className={`cursor-pointer ${classnames({
+                        active: activeTab === APPROVE_AUX_LM_TAB
+                      })}`}
+                      onClick={() => {
+                        toggle(APPROVE_AUX_LM_TAB);
+                      }}
+                    >
+                      {'Approve Liquidity Manager'}
                     </NavLink>
                   </NavItem>
                 </Nav>
@@ -75,8 +103,14 @@ const AccessTabs: React.FunctionComponent = () => {
                   <TabPane tabId={CREATE_MARKET_TAB}>
                     <CreateMarket />
                   </TabPane>
-                  <TabPane tabId={APPROVE_TOKEN_TAB}>
-                    <ApproveToken />
+                  <TabPane tabId={APPROVE_AUX_ZT_TAB}>
+                    <ApproveAuxZT />
+                  </TabPane>
+                  <TabPane tabId={APPROVE_AUX_TZ_TAB}>
+                    <ApproveAuxTZ />
+                  </TabPane>
+                  <TabPane tabId={APPROVE_AUX_LM_TAB}>
+                    <ApproveAuxLM />
                   </TabPane>
                 </TabContent>
               </div>

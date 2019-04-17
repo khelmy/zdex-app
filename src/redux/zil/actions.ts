@@ -36,11 +36,27 @@ export const createMarket = (tokenAddress) => ({
   payload: { tokenAddress }
 });
 
-export const APPROVE_TOKEN = 'APPROVE_TOKEN';
-export const APPROVE_TOKEN_SUCCEEDED = 'APPROVE_TOKEN_SUCCEEDED';
-export const APPROVE_TOKEN_FAILED = 'APPROVE_TOKEN_FAILED';
-export const approveToken = (tokenAddress, amount) => ({
-  type: APPROVE_TOKEN,
+export const APPROVE_AUX_ZT = 'APPROVE_AUX_ZT';
+export const APPROVE_AUX_ZT_SUCCEEDED = 'APPROVE_AUX_ZT_SUCCEEDED';
+export const APPROVE_AUX_ZT_FAILED = 'APPROVE_AUX_ZT_FAILED';
+export const approveAuxZT = (tokenAddress, amount) => ({
+  type: APPROVE_AUX_ZT,
+  payload: { tokenAddress, amount }
+});
+
+export const APPROVE_AUX_TZ = 'APPROVE_AUX_TZ';
+export const APPROVE_AUX_TZ_SUCCEEDED = 'APPROVE_AUX_TZ_SUCCEEDED';
+export const APPROVE_AUX_TZ_FAILED = 'APPROVE_AUX_TZ_FAILED';
+export const approveAuxTZ = (tokenAddress, amount) => ({
+  type: APPROVE_AUX_TZ,
+  payload: { tokenAddress, amount }
+});
+
+export const APPROVE_AUX_LM = 'APPROVE_AUX_LM';
+export const APPROVE_AUX_LM_SUCCEEDED = 'APPROVE_AUX_LM_SUCCEEDED';
+export const APPROVE_AUX_LM_FAILED = 'APPROVE_AUX_LM_FAILED';
+export const approveAuxLM = (tokenAddress, amount) => ({
+  type: APPROVE_AUX_LM,
   payload: { tokenAddress, amount }
 });
 

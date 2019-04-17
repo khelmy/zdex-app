@@ -22,12 +22,12 @@ import Button from '../button';
 import * as zilActions from '../../redux/zil/actions';
 import { connect } from 'react-redux';
 import { getInputValidationState, formatSendAmountInZil } from '../../utils';
-import ConfirmApproveTokenModal from '../confirm-approve-token-modal';
+import ConfirmApproveAuxLMModal from '../confirm-approve-aux-lm-modal';
 import { AccountInfo } from '../account-info';
 import { requestStatus } from '../../constants';
 
 interface IProps {
-  approveToken: (tokenAddress, amount, gasPrice) => void;
+  approveAuxLM: (tokenAddress, amount, gasPrice) => void;
   clear: () => void;
   getMinGasPrice: () => void;
   minGasPriceInQa: string;
@@ -35,11 +35,11 @@ interface IProps {
   getBalance: () => void;
   balanceInQa: string;
   getBalanceStatus?: string;
-  approveTokenStatus?: string;
+  approveAuxLMStatus?: string;
   publicKey: string;
   address: string;
   network: string;
-  approveTokenId?: string;
+  approveAuxLMId?: string;
 }
 
 interface IState {
@@ -66,11 +66,11 @@ const initialState: IState = {
   isUpdatingGasPrice: false
 };
 
-const ApproveTokenForm: React.FunctionComponent<IProps> = (props) => {
+const ApproveAuxLMForm: React.FunctionComponent<IProps> = (props) => {
   const {
     address,
-    approveTokenStatus,
-    approveTokenId,
+    approveAuxLMStatus,
+    approveAuxLMId,
     getBalance,
     balanceInQa,
     getBalanceStatus,
@@ -166,7 +166,7 @@ const ApproveTokenForm: React.FunctionComponent<IProps> = (props) => {
           <div className="py-5">
             <div className="px-4 text-center">
               <h2 className="pb-2">
-                <b>{'Approve Token'}</b>
+                <b>{'Allow Hub to use LiquidityManager'}</b>
               </h2>
               <Row>
                 <Col xs={12} sm={12} md={12} lg={8} className="mr-auto ml-auto">
@@ -242,14 +242,14 @@ const ApproveTokenForm: React.FunctionComponent<IProps> = (props) => {
         </Card>
       </div>
       {isModalOpen ? (
-        <ConfirmApproveTokenModal
-          approveTokenId={approveTokenId}
-          approveTokenStatus={approveTokenStatus}
+        <ConfirmApproveAuxLMModal
+          approveAuxLMId={approveAuxLMId}
+          approveAuxLMStatus={approveAuxLMStatus}
           tokenAddress={tokenAddress}
           amount={amount}
           gasPrice={minGasPriceInZil}
           isModalOpen={isModalOpen}
-          approveToken={props.approveToken}
+          approveAuxLM={props.approveAuxLM}
           closeModal={closeModal}
         />
       ) : null}
@@ -262,8 +262,8 @@ const mapStateToProps = (state) => ({
   getBalanceStatus: state.zil.getBalanceStatus,
   minGasPriceInQa: state.zil.minGasPriceInQa,
   getMinGasPriceStatus: state.zil.getMinGasPriceStatus,
-  approveTokenStatus: state.zil.approveTokenStatus,
-  approveTokenId: state.zil.approveTokenId,
+  approveAuxLMStatus: state.zil.approveAuxLMStatus,
+  approveAuxLMId: state.zil.approveAuxLMId,
   network: state.zil.network,
   address: state.zil.address,
   publicKey: state.zil.publicKey,
@@ -271,7 +271,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  approveToken: (tokenAddress, amount) => dispatch(zilActions.approveToken(tokenAddress, amount)),
+  approveAuxLM: (tokenAddress, amount) => dispatch(zilActions.approveAuxLM(tokenAddress, amount)),
   clear: () => dispatch(zilActions.clear()),
   getBalance: () => dispatch(zilActions.getBalance()),
   getMinGasPrice: () => dispatch(zilActions.getMinGasPrice())
@@ -280,4 +280,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ApproveTokenForm);
+)(ApproveAuxLMForm);
