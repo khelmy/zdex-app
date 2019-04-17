@@ -28,7 +28,8 @@ function* rootSaga() {
     zilSagas.watchCreateMarketSaga(),
     zilSagas.watchZilToTokenSwapSaga(),
     zilSagas.watchTokenToZilSwapSaga(),
-    zilSagas.watchAuthorizeTokenToZilSaga()
+    zilSagas.watchAuthorizeTokenToZilSaga(),
+    zilSagas.watchAuthorizeLiquiditySaga()
   ]);
 }
 
