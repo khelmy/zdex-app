@@ -257,7 +257,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  authorizeTokenToZil: (tokenAddress, amount) => dispatch(zilActions.authorizeTokenToZil(tokenAddress, amount)),
+  authorizeTokenToZil: (tokenAddress, amount) =>
+    dispatch(zilActions.authorizeTokenToZil(tokenAddress, amount)),
   clear: () => dispatch(zilActions.clear()),
   getBalance: () => dispatch(zilActions.getBalance()),
   getMinGasPrice: () => dispatch(zilActions.getMinGasPrice())

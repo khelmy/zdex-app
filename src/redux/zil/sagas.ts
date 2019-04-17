@@ -274,7 +274,6 @@ export function* watchAuthorizeLiquiditySaga() {
   yield takeLatest(consts.AUTHORIZE_LIQUIDITY, authorizeLiquiditySaga);
 }
 
-
 export function* getBalance(action) {
   // debounce by 500ms
   yield delay(500);
