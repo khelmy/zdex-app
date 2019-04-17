@@ -97,8 +97,12 @@ const RemoveLiquidityForm: React.FunctionComponent<IProps> = (props) => {
   const [minZil, setMinLiquidity] = useState(initialState.minZil);
   const [minTokens, setMinTokens] = useState(initialState.minTokens);
   const [recipientAddress, setRecipientAddress] = useState(initialState.recipientAddress);
-  const [recipientAddressValid, setRecipientAddressValid] = useState(initialState.recipientAddressValid);
-  const [recipientAddressInvalid, setRecipientAddressInvalid] = useState(initialState.recipientAddressInvalid);
+  const [recipientAddressValid, setRecipientAddressValid] = useState(
+    initialState.recipientAddressValid
+  );
+  const [recipientAddressInvalid, setRecipientAddressInvalid] = useState(
+    initialState.recipientAddressInvalid
+  );
 
   const isUpdatingBalance = getBalanceStatus === requestStatus.PENDING;
   useEffect(

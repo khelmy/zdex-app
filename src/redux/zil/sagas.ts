@@ -342,18 +342,18 @@ export function* addLiquiditySaga(action) {
     const { tokenAddress, amount, minLiquidity, maxTokens } = payload;
     const params = [
       {
-        vname: "token",
-        type: "ByStr20",
+        vname: 'token',
+        type: 'ByStr20',
         value: tokenAddress
       },
       {
-        vname: "min_liquidity",
-        type: "Uint128",
+        vname: 'min_liquidity',
+        type: 'Uint128',
         value: minLiquidity
       },
       {
-        vname: "max_tokens",
-        type: "Uint128",
+        vname: 'max_tokens',
+        type: 'Uint128',
         value: maxTokens
       },
       {
@@ -384,23 +384,23 @@ export function* removeLiquiditySaga(action) {
     const { tokenAddress, amount, minZil, minTokens, recipientAddress } = payload;
     const params = [
       {
-        vname: "token",
-        type: "ByStr20",
+        vname: 'token',
+        type: 'ByStr20',
         value: tokenAddress
       },
       {
-        vname: "amount",
-        type: "Uint128",
+        vname: 'amount',
+        type: 'Uint128',
         value: amount
       },
       {
-        vname: "min_zil",
-        type: "Uint128",
+        vname: 'min_zil',
+        type: 'Uint128',
         value: minZil
       },
       {
-        vname: "min_tokens",
-        type: "Uint128",
+        vname: 'min_tokens',
+        type: 'Uint128',
         value: minTokens
       },
       {
@@ -409,8 +409,8 @@ export function* removeLiquiditySaga(action) {
         value: `${5e20}`
       },
       {
-        vname: "recipient",
-        type: "ByStr20",
+        vname: 'recipient',
+        type: 'ByStr20',
         value: recipientAddress
       }
     ];
